@@ -8,3 +8,7 @@ stop:
 	docker stop pigeon
 	docker rm pigeon 
 
+twilio-cli:
+	docker run -it --rm \
+	-v ~/repos/pigeon/config/prod/.twilio-cli:/root/.twilio-cli \
+	twilio/twilio-cli bash

@@ -11,3 +11,4 @@ Serendipitious intermittent message delivery service
 1. Build the application (one time): `make build`
 2. Start the application: `make start`
 3. Stop the application: `make stop`
+4. Access Twilio cli (requires twilio credentials in ~/repos/pigeon/config/prod/.twilio-cli): `make twilio-cli`
