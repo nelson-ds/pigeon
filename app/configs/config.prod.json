@@ -1,0 +1,8 @@
+{
+    "uvicorn": {
+        "reload": false
+    },
+    "logging": {
+        "level": "INFO"
+    }
+}

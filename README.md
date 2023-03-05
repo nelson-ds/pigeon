@@ -8,7 +8,8 @@ Serendipitious intermittent message delivery service
 2. [Make](https://www.gnu.org/software/make/) needs to be installed
 
 ### Working in development environment
-1. Build the application (one time): `make build`
-2. Start the application: `make start`
-3. Stop the application: `make stop`
-4. Access Twilio cli (requires twilio credentials in ~/repos/pigeon/config/prod/.twilio-cli): `make twilio-cli`
+1. Start the application: `make start`
+    - App can be accessed via `http://localhost:5000/`
+2. Stop the application: `make stop`
+3. Access Twilio cli (): `make twilio-cli`
+    - pre-requiste is twilio credentials in /pigeon/app/configs/secrets/.twilio-cli.dev (check secrets_template for format)

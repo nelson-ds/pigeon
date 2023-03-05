@@ -1,5 +1,5 @@
 # Environment Variables
-config/prod
+app/configs/secrets
 
 # Mac specific
 .DS_Store
