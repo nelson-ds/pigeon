@@ -1,5 +1,9 @@
-# Environment Variables
+# Secrets
 app/configs/secrets
 
-# Mac specific
+# Byte-compiled / optimized / DLL files
+*.pyc
+
+# OS specific
 .DS_Store
+.vscode*
