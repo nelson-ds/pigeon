@@ -42,7 +42,7 @@ app.add_middleware(
 
 @app.get("/", status_code=status.HTTP_200_OK)
 async def root():
-    return {"message": "cooo"}
+    return {"message": "coooo"}
 
 if __name__ == "__main__":
     port = int(environ.get("PORT", 5000))

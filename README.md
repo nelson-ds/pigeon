@@ -11,5 +11,4 @@ Serendipitious intermittent message delivery service
 1. Start the application: `make start`
     - App can be accessed via `http://localhost:5000/`
 2. Stop the application: `make stop`
-3. Access Twilio cli (): `make twilio-cli`
-    - pre-requiste is twilio credentials in /pigeon/app/configs/secrets/.twilio-cli.dev (check secrets_template for format)
+3. Access Twilio cli (optional): `make twilio-cli`
