@@ -3,8 +3,9 @@ from logging import Formatter, StreamHandler, getLevelName
 from os import path
 
 
-def read_json(path):
-    with open(path, 'r') as f:
+def read_json(relative_path):
+    absolute_path = path.join(path.dirname(__file__), relative_path)
+    with open(absolute_path, 'r') as f:
         return load(f)
 
 
