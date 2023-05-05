@@ -1,5 +1,5 @@
 # pigeon
-Trip planning service utilizing AI recommendation as well as travelling expertise of other users
+Trip planning service utilizing AI recommendation as well as traveling expertise of other users
 
 ## How does this service work?
 - Onboarding to the service
