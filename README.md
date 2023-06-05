@@ -25,7 +25,7 @@ Trip planning service which leverages AI recommendations as well as human travel
 ### Dependencies
 1. [Docker](https://www.docker.com/): needs to be installed
 2. [Make](https://www.gnu.org/software/make/): needs to be installed
-3. Secrets: should be placed in /pigeon/app/configs/secrets/ (template can be found in /pigeon/app/configs/secrets_template/)
+3. Secrets: should be placed in `app/configs/secrets/` (use provided template in `app/configs`)
 
 ### Working in development environment
 1. Start the application: `make start`
