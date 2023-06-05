@@ -45,5 +45,5 @@ async def root():
     return {"message": "coooo"}
 
 if __name__ == "__main__":
-    port = int(environ.get("PORT", 5000))
+    port = int(environ.get("PORT", 8000))
     run("main:app", host="0.0.0.0", port=port, reload=uvicorn_reload)

@@ -12,7 +12,7 @@ class ConfigLoader:
     def __init__(self):
         self.env = self._get_environment()
         self.combined_configs = self._combine_all_configs()
-        self.all_configs = self._get_all_configs()
+        self.all_configs = self._prep_configs_for_runtime()
         self._print_configs()
 
     def _get_environment(self):
@@ -27,8 +27,8 @@ class ConfigLoader:
         combined_configs = {**configs, **secrets, **twilio_secrets}
         return combined_configs
 
-    def _get_all_configs(self):
-        all_configs_file = path.join(path.dirname(__file__), 'configs/secrets', f'.all_configs.{self.env}.json')
+    def _prep_configs_for_runtime(self):
+        all_configs_file = path.join(path.dirname(__file__), 'configs/secrets', f'.runtime_secrets_and_configs.{self.env}.json')
         create_json(self.combined_configs, all_configs_file)
         return read_json(all_configs_file)
 

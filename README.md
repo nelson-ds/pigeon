@@ -23,11 +23,12 @@ Trip planning service which leverages AI recommendations as well as human travel
 ## Development
 
 ### Dependencies
-1. [Docker](https://www.docker.com/) needs to be installed
-2. [Make](https://www.gnu.org/software/make/) needs to be installed
+1. [Docker](https://www.docker.com/): needs to be installed
+2. [Make](https://www.gnu.org/software/make/): needs to be installed
+3. Secrets: should be placed in /pigeon/app/configs/secrets/ (template can be found in /pigeon/app/configs/secrets_template/)
 
 ### Working in development environment
 1. Start the application: `make start`
-    - App can be accessed via `http://localhost:5000/`
+    - App can be accessed via `http://localhost:8000/`
 2. Stop the application: `make stop`
 3. Access Twilio cli (optional): `make twilio-cli`

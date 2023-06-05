@@ -5,6 +5,6 @@ services:
     container_name: pigeon_app
     build: .
     ports:
-      - 5000:5000
+      - 8000:8000
     volumes:
       - ./app:/pigeon/app
