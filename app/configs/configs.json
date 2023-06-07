@@ -1,0 +1,18 @@
+{
+    "dev": {
+        "uvicorn": {
+            "reload": true
+        },
+        "logging": {
+            "level": "DEBUG"
+        }
+    },
+    "prod": {
+        "uvicorn": {
+            "reload": false
+        },
+        "logging": {
+            "level": "INFO"
+        }
+    }
+}

@@ -14,8 +14,7 @@ logger.info("Setting up config..")
 all_configs = ConfigLoader().all_configs
 uvicorn_reload = all_configs["uvicorn"]["reload"]
 logging_level = all_configs["logging"]["level"]
-twilio_phn_from = all_configs["twilio"]["phn_from"]
-twilio_phn_to = all_configs["twilio"]["phn_to"]
+twilio_sending_number = all_configs["twilio_sending_number"]
 twilio_account_sid = all_configs["profiles"]["pigeon"]["accountSid"]
 twilio_auth_token = all_configs["profiles"]["pigeon"]["authToken"]
 configure_logger(logger, logging_level)
@@ -45,5 +44,7 @@ async def root():
     return {"message": "coooo"}
 
 if __name__ == "__main__":
-    port = int(environ.get("PORT", 8000))
+    port = int(environ.get("APP_PORT", 8000))
     run("main:app", host="0.0.0.0", port=port, reload=uvicorn_reload)
+
+# TODO: Integrate credentials for MongoDb

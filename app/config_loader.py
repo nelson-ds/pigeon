@@ -21,14 +21,13 @@ class ConfigLoader:
         return getenv('ENVIRONMENT')
 
     def _combine_all_configs(self):
-        configs = read_json(f'configs/config.{self.env}.json')
-        secrets = read_json(f'configs/secrets/.secrets.{self.env}.json')
-        twilio_secrets = read_json(f'configs/secrets/.twilio-cli.{self.env}/config.json')
-        combined_configs = {**configs, **secrets, **twilio_secrets}
+        configs = read_json(f'configs/configs.json')[self.env]
+        twilio_secrets = read_json(f'/pigeon/secrets/{self.env}/twilio/.twilio-cli/config.json')
+        combined_configs = {**configs, **twilio_secrets}
         return combined_configs
 
     def _prep_configs_for_runtime(self):
-        all_configs_file = path.join(path.dirname(__file__), 'configs/secrets', f'.runtime_secrets_and_configs.{self.env}.json')
+        all_configs_file = path.join(f'/pigeon/secrets/{self.env}/', f'.tmp_runtime_configs.json')
         create_json(self.combined_configs, all_configs_file)
         return read_json(all_configs_file)
 

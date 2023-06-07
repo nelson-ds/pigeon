@@ -7,9 +7,11 @@ start: stop
 
 stop:
 	-docker stop pigeon_app
+	-docker stop mongo_db
 	-docker rm pigeon_app
+	-docker rm mongo_db
 
 twilio-cli:
 	docker run -it --rm \
-	-v ${CURRENT_DIR}/app/configs/secrets/.twilio-cli.${ENVIRONMENT}:/root/.twilio-cli \
+	-v ${CURRENT_DIR}/secrets/app/${ENVIRONMENT}/twilio/.twilio-cli:/root/.twilio-cli \
 	twilio/twilio-cli bash

@@ -8,3 +8,13 @@ services:
       - 8000:8000
     volumes:
       - ./app:/pigeon/app
+      - ./secrets/app:/pigeon/secrets
+
+  mongodb:
+    container_name: mongo_db
+    image: mongo:6.0
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data:/pigeon/data
+      - ./secrets/mongodb:/pigeon/secrets

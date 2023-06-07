@@ -1,8 +1,0 @@
-{
-    "uvicorn": {
-        "reload": true
-    },
-    "logging": {
-        "level": "DEBUG"
-    }
-}

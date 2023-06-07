@@ -1,6 +1,8 @@
 # Secrets
-app/configs/secrets
-app/configs/secrets_template
+secrets
+
+# DB
+data
 
 # Byte-compiled / optimized / DLL files
 *.pyc
