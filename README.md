@@ -32,3 +32,10 @@ Trip planning service which leverages AI recommendations as well as human travel
     - App can be accessed via `http://localhost:8000/`
 2. Stop the application: `make stop`
 3. Access Twilio cli (optional): `make twilio-cli`
+
+## TODOS
+#### TODO: create persisted mongodb with credentials (via automated script)
+#### TODO: refactor app into modules (use single dotenv)
+#### TODO: add class for configs
+#### TODO: add unit tests
+#### TODO: encrypt mongodb data at rest

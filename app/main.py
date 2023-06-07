@@ -50,11 +50,3 @@ async def root():
 if __name__ == '__main__':
     port = int(environ.get('APP_PORT'))
     run('main:app', host='0.0.0.0', port=port, reload=uvicorn_reload)
-
-# FIXME: test local python run
-# FIXME: add secrets_template to .gitignore
-# TODO: create mongodb with credentials (use automated script)
-# TODO: refactor app into modules (use single dotenv)
-# TODO: add class for configs
-# TODO: add unit tests
-# TODO: check mongodb encryption at rest
