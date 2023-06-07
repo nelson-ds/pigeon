@@ -7,8 +7,9 @@ services:
     ports:
       - 8000:8000
     volumes:
+      - ./.env:/pigeon/.env
+      - ./secrets/app/${ENVIRONMENT}:/pigeon/secrets
       - ./app:/pigeon/app
-      - ./secrets/app:/pigeon/secrets
 
   mongodb:
     container_name: mongo_db
@@ -17,4 +18,7 @@ services:
       - 27017:27017
     volumes:
       - ./data:/pigeon/data
-      - ./secrets/mongodb:/pigeon/secrets
+      - ./secrets/mongodb/${ENVIRONMENT}:/pigeon/secrets/
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME_FILE=/pigeon/secrets/mongodb_username.txt
+      - MONGO_INITDB_ROOT_PASSWORD_FILE=/pigeon/secrets/mongodb_password.txt

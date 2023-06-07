@@ -1,5 +1,5 @@
 CURRENT_DIR := $(shell pwd)
-ENVIRONMENT := $(shell grep ENVIRONMENT app/configs/.env | cut -d= -f2 | tr -d "'")
+ENVIRONMENT := $(shell grep ENVIRONMENT .env | cut -d= -f2 | tr -d "'")
 
 start: stop 
 	docker-compose up --build -d

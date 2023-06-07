@@ -1,15 +1,13 @@
 from json import dump, load
 from logging import Formatter, StreamHandler, getLevelName
-from os import path
 
 
-def read_json(relative_path: str):
-    absolute_path = path.join(path.dirname(__file__), relative_path)
-    with open(absolute_path, 'r') as f:
+def read_json(json_path_str: str):
+    with open(json_path_str, 'r') as f:
         return load(f)
 
 
-def create_json(data: dict, path: path):
+def create_json(path: str, data: dict):
     with open(path, 'w') as f:
         dump(data, f)
 
