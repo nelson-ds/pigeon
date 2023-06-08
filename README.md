@@ -25,16 +25,27 @@ Trip planning service which leverages AI recommendations as well as human travel
 ### Dependencies
 1. [Docker](https://www.docker.com/): needs to be installed
 2. [Make](https://www.gnu.org/software/make/): needs to be installed
-3. Secrets: should be placed in `secrets/` (refer `secrets_template/` for format)
+3. Secrets: should be placed in `pigeon/secrets/` (refer `pigeon/secrets_template/` for format)
 
 ### Working in development environment
 1. Start the application: `make start`
     - App can be accessed via `http://localhost:8000/`
 2. Stop the application: `make stop`
-3. Access Twilio cli (optional): `make twilio-cli`
+
+
+### Helper commands
+- Access Twilio cli: 
+  ```
+  make twilio-cli
+  twilio phone-numbers:list
+  ```
+- Access MongoDB cli: 
+  ```
+  docker exec -it mongo_db bash
+  eval $MONGOSH
+  ```
 
 ### Work in progress
-- TODO: create persisted mongodb with credentials (via automated script)
 - TODO: refactor app into modules (use single dotenv)
 - TODO: add class for configs
 - TODO: add unit tests

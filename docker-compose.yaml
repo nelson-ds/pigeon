@@ -14,11 +14,15 @@ services:
   mongodb:
     container_name: mongo_db
     image: mongo:6.0
+    restart: always
     ports:
       - 27017:27017
     volumes:
-      - ./data:/pigeon/data
-      - ./secrets/mongodb/${ENVIRONMENT}:/pigeon/secrets/
+      - ./secrets/mongo_db/${ENVIRONMENT}:/pigeon/secrets/
+      - ./mongo_db/data/db:/data/db
+      - ./mongo_db/init_scripts:/docker-entrypoint-initdb.d
     environment:
       - MONGO_INITDB_ROOT_USERNAME_FILE=/pigeon/secrets/mongodb_username.txt
       - MONGO_INITDB_ROOT_PASSWORD_FILE=/pigeon/secrets/mongodb_password.txt
+      - MONGO_INITDB_DATABASE=pigeon
+      - MONGOSH=mongosh --username "$(cat $$MONGO_INITDB_ROOT_USERNAME_FILE)" --password "$(cat $$MONGO_INITDB_ROOT_PASSWORD_FILE)" --authenticationDatabase admin $$MONGO_INITDB_DATABASE
