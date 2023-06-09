@@ -14,12 +14,12 @@ env_path = '/pigeon/.env'
 
 class Launcher:
     def __init__(self):
-        load_dotenv(env_path)
         self.logger = getLogger("uvicorn")
         configure_logger(self.logger)
         self.configs = None
         self.twilio_client = None
 
+        load_dotenv(env_path)
         self.launch(environ.get("ENVIRONMENT"))
 
     def launch(self, env):
