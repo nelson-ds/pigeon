@@ -49,5 +49,4 @@ Trip planning service which leverages AI recommendations as well as human travel
 - TODO: send Twilio message
 - TODO: recieve Twilio message
 - TODO: add unit tests
-- TODO: refactor for single launcher during startup
 - TODO: encrypt mongodb data at rest
