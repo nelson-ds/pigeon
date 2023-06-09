@@ -33,6 +33,7 @@ class Configs:
 
     class ConfigsUvicorn:
         def __init__(self, uvicorn_configs: dict):
+            self.port = uvicorn_configs['port']
             self.reload = uvicorn_configs['reload']
 
     class ConfigsLogging:

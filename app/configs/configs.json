@@ -1,6 +1,7 @@
 {
     "dev": {
         "uvicorn": {
+            "port": 8000,
             "reload": true
         },
         "logging": {
@@ -9,6 +10,7 @@
     },
     "prod": {
         "uvicorn": {
+            "port": 8000,
             "reload": false
         },
         "logging": {
