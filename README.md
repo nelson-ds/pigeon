@@ -46,7 +46,7 @@ Trip planning service which leverages AI recommendations as well as human travel
   ```
 
 ### Work in progress
-- TODO: refactor app into modules (use single dotenv)
-- TODO: add class for configs
+- TODO: send Twilio message
+- TODO: recieve Twilio message
 - TODO: add unit tests
 - TODO: encrypt mongodb data at rest
