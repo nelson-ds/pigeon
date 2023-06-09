@@ -14,19 +14,16 @@ env_path = '/pigeon/.env'
 class Launcher:
     def __init__(self):
         load_dotenv(env_path)
-        self.env = environ.get("ENVIRONMENT")
-
         self.logger = getLogger("uvicorn")
         configure_logger(self.logger)
-
         self.configs = None
         self.twilio_client = None
 
-        self.launch()
+        self.launch(environ.get("ENVIRONMENT"))
 
-    def launch(self):
-        self.logger.info(f'Setting up config for {self.env} environment..')
-        self.configs = ConfigLoader(self.env).configs
+    def launch(self, env):
+        self.logger.info(f'Setting up config for {env} environment..')
+        self.configs = ConfigLoader(env).configs
         self.logger.setLevel(getLevelName(self.configs.logging.level))
 
         self.logger.info('Creating Twilio client..')

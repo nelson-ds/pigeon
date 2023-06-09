@@ -5,7 +5,7 @@ from utils.utility_funcs import create_json, read_json
 
 logger = getLogger('uvicorn')
 
-app_configs_file = 'configs.json'
+app_configs_file = '/pigeon/app/configs/configs.json'
 twilio_secrets_file = '/pigeon/secrets/twilio/.twilio-cli/config.json'
 combined_configs_file = '/pigeon/secrets/.tmp_runtime_configs.json'
 
