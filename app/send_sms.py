@@ -1,14 +1,16 @@
+from logging import getLogger
+
 from twilio.rest import Client
 
+logger = getLogger("uvicorn")
 
-def send_sms(twilio_client: Client, to: str, from_: str):
+
+def send_sms(twilio_client: Client, from_: str, to: str):
 
     message = twilio_client.messages.create(
-        body="Coo Coo",
+        from_=from_,
         to=to,
-        from_=from_
+        body="Coo Coo"
     )
 
-    print(f"message: {message.body}")
-    print(f"sent from: {message.from_}")
-    print(f"sent to: {message.to}")
+    logger.info(f"sending message: {message.body}, from: {message.from_}, to: {message.to}")

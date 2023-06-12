@@ -1,1 +1,1 @@
-db.users.insertOne({ name: 'John Doe', phone_number: '+19999999999' });
+db.users.createIndex({ phone_number: 1 }, { unique: true });

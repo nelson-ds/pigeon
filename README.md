@@ -46,7 +46,8 @@ Trip planning service which leverages AI recommendations as well as human travel
   ```
 
 ### Work in progress
-- TODO: send Twilio message
-- TODO: recieve Twilio message
+- TODO: send sms via Twilio by retrieving sending number from dao
+- TODO: recieve sms via Twilio
 - TODO: add unit tests
 - TODO: encrypt mongodb data at rest
+- TODO: peruse drive use-cases
