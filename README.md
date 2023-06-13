@@ -41,12 +41,11 @@ Trip planning service which leverages AI recommendations as well as human travel
   ```
 - Access MongoDB cli: 
   ```
-  docker exec -it mongo_db bash
+  docker exec -it mongodb bash
   eval $MONGOSH
   ```
 
 ### Work in progress
-- TODO: send sms via Twilio by retrieving sending number from dao
 - TODO: recieve sms via Twilio
 - TODO: add unit tests
 - TODO: encrypt mongodb data at rest

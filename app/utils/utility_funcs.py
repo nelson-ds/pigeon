@@ -2,6 +2,11 @@ from json import dump, load
 from logging import Formatter, StreamHandler, getLevelName
 
 
+def read_file(file_path: str):
+    with open(file_path, "r") as file:
+        return file.read()
+
+
 def read_json(json_path_str: str):
     with open(json_path_str, 'r') as f:
         return load(f)

@@ -1,7 +1,7 @@
 from logging import getLevelName, getLogger
 
-from data_models.dao.user_dao import UserDAO
-from data_models.dto.user_dto import UserDTO
+from data_models.dao.mongodb_dao import MongodbDao
+from data_models.dto.users_dto import UsersDto
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes import router
@@ -39,16 +39,15 @@ class Launcher:
         twilio_client = Client(self.configs.twilio.account_sid, self.configs.twilio.auth_token)
 
         self.logger.info('Creating user DAO..')
-        user_dao = UserDAO(self.configs)
+        users_dao = MongodbDao(self.configs)
 
-        # self.logger.info('Temporary code..')
-        # user_dto = UserDTO("John Doe", "+19999999999")
-        # inserted_id = user_dao.insert_user(user_dto)
+        self.logger.info('Temporary code..')
+        # user1_dto: UsersDto = UsersDto("John Doe", "+19999999999")
+        # inserted_id = users_dao.insert_user(user1_dto)
         # self.logger.info(f"User inserted in DB with ID: {inserted_id}")
-        # user = user_dao.get_user_by_id(inserted_id)
-        # self.logger.info(f"User retrieved from DB: {user}")
-        # user_dao.close_connection()
-
+        user1: UsersDto = users_dao.get_user_by_name('John Doe')
+        self.logger.info(f"User retrieved from DB: {user1}")
+        users_dao.close_connection()
         # send_sms(twilio_client, self.configs.twilio.sending_number, user.phone_number)
 
 

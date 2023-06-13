@@ -6,6 +6,9 @@
         },
         "logging": {
             "level": "DEBUG"
+        },
+        "mongodb": {
+            "collection_users": "users"
         }
     },
     "prod": {
@@ -15,6 +18,9 @@
         },
         "logging": {
             "level": "INFO"
+        },
+        "mongodb": {
+            "collection_users": "users"
         }
     }
 }

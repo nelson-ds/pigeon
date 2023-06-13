@@ -2,7 +2,7 @@
 secrets
 
 # DB
-mongo_db/data
+mongodb/data
 
 # Byte-compiled / optimized / DLL files
 *.pyc
