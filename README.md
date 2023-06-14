@@ -34,19 +34,30 @@ Trip planning service which leverages AI recommendations as well as human travel
 
 
 ### Helper commands
-- Access Twilio cli: 
-  ```
-  make twilio-cli
-  twilio phone-numbers:list
-  ```
 - Access MongoDB cli: 
   ```
   docker exec -it mongodb bash
   eval $MONGOSH
   ```
 
+- Twilio
+  - Access Twilio cli: 
+    ```
+    make twilio-cli
+    twilio phone-numbers:list
+    ```
+
+  - Simulate Twilio webhook to receive sms:
+    ```
+    curl -X POST -d "To=%2B1234567890" -d "From=%2B0987654321" -d "Body=Hello, pigeon" http://localhost:8000/sms
+    ```
+
 ### Work in progress
-- TODO: recieve sms via Twilio
+- FIXME: configure port forwarding on vpn
+- FIXME: configure only Twilio IPs in Firewall rules (deny other IPs)
+- FIXME: configure rate limiting
+- FIXME: recieve sms via Twilio from webhook
+- TODO: create flow for on-boarding user
 - TODO: add unit tests
 - TODO: encrypt mongodb data at rest
 - TODO: peruse drive use-cases
