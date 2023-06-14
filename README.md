@@ -53,11 +53,12 @@ Trip planning service which leverages AI recommendations as well as human travel
     ```
 
 ### Work in progress
-- FIXME: configure port forwarding on vpn
-- FIXME: configure only Twilio IPs in Firewall rules (deny other IPs)
-- FIXME: configure rate limiting
-- FIXME: recieve sms via Twilio from webhook
+- TODO: deploy app on server
+- TODO: recieve sms from Twilio in server from webhook (non 80 port)
+- TODO: configure only Twilio IPs in Firewall rules (deny other IPs)
+- TODO: configure rate limiting for webhook
 - TODO: create flow for on-boarding user
+- TODO: sanitize input to avoid injection attacks
 - TODO: add unit tests
 - TODO: encrypt mongodb data at rest
 - TODO: peruse drive use-cases
