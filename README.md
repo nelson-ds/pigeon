@@ -26,6 +26,7 @@ Trip planning service which leverages AI recommendations as well as human travel
 1. [Docker](https://www.docker.com/): needs to be installed
 2. [Make](https://www.gnu.org/software/make/): needs to be installed
 3. Secrets: should be placed in `pigeon/secrets/` (refer `pigeon/secrets_template/` for format)
+4. Env: variables in `.env` should be updated basedon on user preference
 
 ### Working in development environment
 1. Start the application: `make start`
@@ -53,7 +54,7 @@ Trip planning service which leverages AI recommendations as well as human travel
     ```
 
 ### Work in progress
-- TODO: deploy app on server
+- FIXME: deploy app on server (pull fresh code & setup secrets for prod)
 - TODO: recieve sms from Twilio in server from webhook (non 80 port)
 - TODO: configure only Twilio IPs in Firewall rules (deny other IPs)
 - TODO: configure rate limiting for webhook

@@ -4,12 +4,12 @@
     "projects": [],
     "profiles": {
         "pigeon": {
-            "accountSid": "",
-            "apiKey": "",
-            "apiSecret": "",
-            "authToken": ""
+            "accountSid": "<your_account_sid>",
+            "apiKey": "<your_api_key>",
+            "apiSecret": "<your_api_secret>",
+            "authToken": "<your_auth_token>"
         }
     },
-    "activeProject": "",
-    "twilio_sending_number": ""
+    "activeProject": "<your_project_name>",
+    "twilio_sending_number": "<your_twilio_sending_number>"
 }

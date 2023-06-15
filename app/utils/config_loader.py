@@ -3,15 +3,14 @@ from os import environ
 from pprint import pformat
 
 from dotenv import load_dotenv
-from utils.utility_funcs import create_json, read_file, read_json
+from utils.utility_funcs import create_json, file_to_dict, read_json
 
 logger = getLogger('uvicorn')
 
 env_path = '/pigeon/.env'
 app_configs_file = '/pigeon/app/configs/configs.json'
 twilio_secrets_file = '/pigeon/secrets/twilio/.twilio-cli/config.json'
-db_username_file = '/pigeon/secrets/mongodb/mongodb_username.txt'
-db_password_file = '/pigeon/secrets/mongodb/mongodb_password.txt'
+db_credentials_file = '/pigeon/secrets/mongodb/mongodb_credentials.txt'
 combined_configs_file = '/pigeon/secrets/.tmp_runtime_configs.json'
 
 
@@ -19,9 +18,8 @@ class ConfigsEnv:
     def __init__(self):
         load_dotenv(env_path)
         self.environment = environ.get("ENVIRONMENT")
-        self.db_container_name = environ.get("DB_CONTAINER_NAME")
-        self.db_port = int(environ.get("DB_PORT"))
-        self.db_name = environ.get("DB_NAME")
+        self.mongodb_container_name = environ.get("MONGODB_CONTAINER_NAME")
+        self.mongodb_port_number = int(environ.get("MONGODB_PORT_NUMBER"))
 
 
 class ConfigLoader:
@@ -33,7 +31,7 @@ class ConfigLoader:
     def _combine_all_configs(self, configs_env: ConfigsEnv):
         env = {'env': vars(configs_env)}
         configs = {'configs': read_json(app_configs_file)[configs_env.environment]}
-        mongodb_secrets = {'mongodb_secrets': {'username': read_file(db_username_file), 'password': read_file(db_password_file)}}
+        mongodb_secrets = {'mongodb_secrets': file_to_dict(db_credentials_file, '=')}
         twilio_secrets = {'twilio_secrets': read_json(twilio_secrets_file)}
 
         combined_configs = {**env, **configs, **mongodb_secrets, **twilio_secrets}
@@ -61,8 +59,9 @@ class Configs:
 
     class ConfigsMongodb:
         def __init__(self, db_secrets: dict, db_configs: dict):
-            self.username = db_secrets['username']
-            self.password = db_secrets['password']
+            self.username = db_secrets['MONGODB_USERNAME']
+            self.password = db_secrets['MONGODB_PASSWORD']
+            self.database = db_secrets['MONGODB_DATABASE']
             self.collection_users = db_configs['collection_users']
 
     class ConfigsTwilio:

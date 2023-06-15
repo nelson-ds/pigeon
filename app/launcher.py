@@ -45,9 +45,9 @@ class Launcher:
         # user1_dto: UsersDto = UsersDto("John Doe", "+19999999999")
         # inserted_id = users_dao.insert_user(user1_dto)
         # self.logger.info(f"User inserted in DB with ID: {inserted_id}")
-        user1: UsersDto = users_dao.get_user_by_name('John Doe')
-        self.logger.info(f"User retrieved from DB: {user1}")
-        users_dao.close_connection()
+        # user1: UsersDto = users_dao.get_user_by_name('John Doe')
+        # self.logger.info(f"User retrieved from DB: {user1}")
+        # users_dao.close_connection()
         # send_sms(twilio_client, self.configs.twilio.sending_number, user.phone_number)
 
 

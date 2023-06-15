@@ -10,12 +10,13 @@ logger = getLogger('uvicorn')
 class MongodbDao:
     def __init__(self, configs: Configs):
 
-        self.client = MongoClient(host=f'mongodb://{configs.env.db_container_name}',
-                                  port=configs.env.db_port,
+        self.client = MongoClient(host=f'mongodb://{configs.env.mongodb_container_name}',
+                                  port=configs.env.mongodb_port_number,
                                   username=configs.mongodb.username,
-                                  password=configs.mongodb.password
+                                  password=configs.mongodb.password,
+                                  authSource=configs.mongodb.database
                                   )
-        self.db = self.client[f'{configs.env.db_name}']
+        self.db = self.client[f'{configs.mongodb.database}']
         self.collection_users = self.db[configs.mongodb.collection_users]
 
     def insert_user(self, user: UsersDto):

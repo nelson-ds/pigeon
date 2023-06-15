@@ -7,9 +7,9 @@ start: stop
 
 stop:
 	-docker stop pigeon_app
-	-docker stop mongo_db
+	-docker stop mongodb
 	-docker rm pigeon_app
-	-docker rm mongo_db
+	-docker rm mongodb
 
 twilio-cli:
 	docker run -it --rm \
