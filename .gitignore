@@ -1,8 +1,11 @@
 # Secrets
 secrets
 
+# Environment
+.env
+
 # DB
-mongodb/data
+mongodb/database
 
 # Byte-compiled / optimized / DLL files
 *.pyc

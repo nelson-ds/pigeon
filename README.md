@@ -54,7 +54,7 @@ Trip planning service which leverages AI recommendations as well as human travel
     ```
 
 ### Work in progress
-- FIXME: deploy app on server (pull fresh code & setup secrets for prod)
+- TODO: deploy app on server (pull fresh code & setup secrets for prod)
 - TODO: recieve sms from Twilio in server from webhook (non 80 port)
 - TODO: configure only Twilio IPs in Firewall rules (deny other IPs)
 - TODO: configure rate limiting for webhook
