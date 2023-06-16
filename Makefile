@@ -13,5 +13,5 @@ stop:
 
 twilio-cli:
 	docker run -it --rm \
-	-v ${CURRENT_DIR}/secrets/app/${ENVIRONMENT}/twilio/.twilio-cli:/root/.twilio-cli \
+	-v ${CURRENT_DIR}/secrets/${ENVIRONMENT}/twilio/.twilio-cli:/root/.twilio-cli \
 	twilio/twilio-cli bash

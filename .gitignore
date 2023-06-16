@@ -6,6 +6,7 @@ secrets
 
 # DB
 mongodb/database
+redis_data
 
 # Byte-compiled / optimized / DLL files
 *.pyc
