@@ -13,7 +13,7 @@ services:
 
   mongodb:
     container_name: ${MONGODB_CONTAINER_NAME}
-    image: mongo:6.0
+    image: mongo:4.0
     restart: always
     ports:
       - ${MONGODB_PORT_NUMBER}:${MONGODB_PORT_NUMBER}
@@ -22,6 +22,6 @@ services:
       - ./mongodb/data/db:/data/db
       - ./mongodb/init_scripts:/docker-entrypoint-initdb.d
     environment:
-      - MONGOSH=mongosh --username $$MONGO_INITDB_ROOT_USERNAME --password $$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase $$MONGO_AUTH_DATABASE $$MONGO_INITDB_DATABASE
+      - MONGOSH=mongo --username $$MONGO_INITDB_ROOT_USERNAME --password $$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase $$MONGO_AUTH_DATABASE $$MONGO_INITDB_DATABASE
     env_file:
       - ./secrets/${ENVIRONMENT}/mongodb/mongodb_credentials.txt
