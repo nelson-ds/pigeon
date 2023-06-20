@@ -14,7 +14,7 @@ class MongodbDao:
                                   port=configs.env.mongodb_port_number,
                                   username=configs.mongodb.username,
                                   password=configs.mongodb.password,
-                                  authSource=configs.mongodb.database
+                                  authSource=configs.mongodb.database_auth
                                   )
         self.db = self.client[f'{configs.mongodb.database}']
         self.collection_users = self.db[configs.mongodb.collection_users]

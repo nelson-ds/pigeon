@@ -5,7 +5,7 @@ secrets
 .env
 
 # DB
-mongodb/database
+mongodb/data
 redis_data
 
 # Byte-compiled / optimized / DLL files

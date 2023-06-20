@@ -59,9 +59,10 @@ class Configs:
 
     class ConfigsMongodb:
         def __init__(self, db_secrets: dict, db_configs: dict):
-            self.username = db_secrets['MONGODB_USERNAME']
-            self.password = db_secrets['MONGODB_PASSWORD']
-            self.database = db_secrets['MONGODB_DATABASE']
+            self.username = db_secrets['MONGO_INITDB_ROOT_USERNAME']
+            self.password = db_secrets['MONGO_INITDB_ROOT_PASSWORD']
+            self.database = db_secrets['MONGO_INITDB_DATABASE']
+            self.database_auth = db_secrets['MONGO_AUTH_DATABASE']
             self.collection_users = db_configs['collection_users']
 
     class ConfigsTwilio:
