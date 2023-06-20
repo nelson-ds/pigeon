@@ -11,7 +11,7 @@
             "collection_users": "users"
         }
     },
-    "prod": {
+    "stage": {
         "uvicorn": {
             "port": 8000,
             "reload": false
