@@ -1,7 +1,6 @@
 {
     "dev": {
         "uvicorn": {
-            "port": 8000,
             "reload": true
         },
         "logging": {
@@ -13,7 +12,6 @@
     },
     "stage": {
         "uvicorn": {
-            "port": 8000,
             "reload": false
         },
         "logging": {

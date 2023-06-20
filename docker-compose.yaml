@@ -2,10 +2,10 @@ version: '3'
 
 services:
   pigeon_app:
-    container_name: pigeon_app
+    container_name: ${APP_CONTAINER_NAME}
     build: .
     ports:
-      - 8000:8000
+      - ${APP_PORT_NUMBER}:${APP_PORT_NUMBER}
     volumes:
       - ./.env:/pigeon/.env
       - ./secrets/${ENVIRONMENT}:/pigeon/secrets

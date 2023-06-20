@@ -18,8 +18,11 @@ class ConfigsEnv:
     def __init__(self):
         load_dotenv(env_path)
         self.environment = environ.get("ENVIRONMENT")
-        self.mongodb_container_name = environ.get("MONGODB_CONTAINER_NAME")
+        self.app_port_number = int(environ.get("APP_PORT_NUMBER"))
+        self.mongodb_database = environ.get('MONGO_INITDB_DATABASE')
+        self.mongodb_database_auth = environ.get('MONGO_AUTH_DATABASE')
         self.mongodb_port_number = int(environ.get("MONGODB_PORT_NUMBER"))
+        self.mongodb_container_name = environ.get("MONGODB_CONTAINER_NAME")
 
 
 class ConfigLoader:
@@ -50,7 +53,6 @@ class Configs:
 
     class ConfigsUvicorn:
         def __init__(self, uvicorn_configs: dict):
-            self.port = uvicorn_configs['port']
             self.reload = uvicorn_configs['reload']
 
     class ConfigsLogging:
@@ -61,8 +63,6 @@ class Configs:
         def __init__(self, db_secrets: dict, db_configs: dict):
             self.username = db_secrets['MONGO_INITDB_ROOT_USERNAME']
             self.password = db_secrets['MONGO_INITDB_ROOT_PASSWORD']
-            self.database = db_secrets['MONGO_INITDB_DATABASE']
-            self.database_auth = db_secrets['MONGO_AUTH_DATABASE']
             self.collection_users = db_configs['collection_users']
 
     class ConfigsTwilio:

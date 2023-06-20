@@ -14,9 +14,9 @@ class MongodbDao:
                                   port=configs.env.mongodb_port_number,
                                   username=configs.mongodb.username,
                                   password=configs.mongodb.password,
-                                  authSource=configs.mongodb.database_auth
+                                  authSource=configs.env.mongodb_database_auth
                                   )
-        self.db = self.client[f'{configs.mongodb.database}']
+        self.db = self.client[f'{configs.env.mongodb_database}']
         self.collection_users = self.db[configs.mongodb.collection_users]
 
     def insert_user(self, user: UsersDto):
