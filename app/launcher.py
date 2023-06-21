@@ -8,7 +8,7 @@ from routes import router
 from send_sms import send_sms
 from twilio.rest import Client
 from utils.config_loader import ConfigLoader
-from utils.utility_funcs import configure_logger
+from utils.generic import configure_logger
 
 
 class Launcher:

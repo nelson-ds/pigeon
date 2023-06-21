@@ -25,7 +25,7 @@ Trip planning service which leverages AI recommendations as well as human travel
 ### Dependencies
 1. [Docker](https://www.docker.com/): needs to be installed
 2. [Make](https://www.gnu.org/software/make/): needs to be installed
-3. Environment variables: shoule be plaved in `.env` (refer `.env_template/` for format)
+3. Environment variables: shoule be placed in `.env` (refer `.env_template/` for format)
 4. Secret variables: should be placed in `pigeon/secrets/` (refer `pigeon/secrets_template/` for format)
 
 
@@ -55,8 +55,8 @@ Trip planning service which leverages AI recommendations as well as human travel
     ```
 
 ### Work in progress
-- TODO: configure only Twilio IPs in Firewall rules (deny other IPs)
-- TODO: configure rate limiting for webhook in firewall
+- FIXME: authenticate via http auth and webhook signature
+- FIXME: configure rate limiting for webhook in firewall
 - TODO: create flow for on-boarding user
 - TODO: add unit tests
 - TODO: sanitize input to avoid injection attacks

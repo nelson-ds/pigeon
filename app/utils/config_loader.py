@@ -3,7 +3,7 @@ from os import environ
 from pprint import pformat
 
 from dotenv import load_dotenv
-from utils.utility_funcs import create_json, file_to_dict, read_json
+from utils.generic import create_json, file_to_dict, read_json
 
 logger = getLogger('uvicorn')
 

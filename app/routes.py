@@ -19,3 +19,4 @@ async def receive_sms(request: Request):
     sms_from = form.get('From')
     sms_body = form.get('Body')
     logger.info(f'Recieved sms from {sms_from} with body" {sms_body}')
+    return "Received SMS"
