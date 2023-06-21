@@ -4,7 +4,7 @@ from data_models.dao.mongodb_dao import MongodbDao
 from data_models.dto.users_dto import UsersDto
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import router
+from routes import Routes
 from send_sms import send_sms
 from twilio.rest import Client
 from utils.generic import configure_logger
@@ -16,7 +16,6 @@ class Launcher:
         self.logger = getLogger("uvicorn")
         configure_logger(self.logger)
         self.settings = None
-
         self.launch()
 
     def configure_app(self, app):
@@ -28,7 +27,8 @@ class Launcher:
             allow_methods=['*'],
             allow_headers=['*'],
         )
-        app.include_router(router)
+        routes = Routes(self.settings)
+        app.include_router(routes.router)
 
     def launch(self):
         self.logger.info(f'Accumalating all settings like configs and secrets..')
