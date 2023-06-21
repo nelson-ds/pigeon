@@ -1,21 +1,17 @@
 {
     "dev": {
-        "uvicorn": {
-            "reload": true
-        },
-        "logging": {
-            "level": "DEBUG"
+        "app": {
+            "uvicorn_reload": true,
+            "logging_level": "DEBUG"
         },
         "mongodb": {
             "collection_users": "users"
         }
     },
     "stage": {
-        "uvicorn": {
-            "reload": false
-        },
-        "logging": {
-            "level": "INFO"
+        "app": {
+            "uvicorn_reload": false,
+            "logging_level": "INFO"
         },
         "mongodb": {
             "collection_users": "users"

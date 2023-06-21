@@ -59,8 +59,8 @@ Trip planning service which leverages AI recommendations as well as human travel
     ```
 
 ### Work in progress
-- FIXME: authenticate via http auth and webhook signature
-- FIXME: configure rate limiting for webhook in firewall
+- FIXME: authenticate webhook validity via webhook signature and http auth 
+- TODO: configure rate limiting for webhook in firewall
 - TODO: create flow for on-boarding user
 - TODO: add unit tests
 - TODO: sanitize input to avoid injection attacks

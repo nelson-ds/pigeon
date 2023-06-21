@@ -7,15 +7,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes import router
 from send_sms import send_sms
 from twilio.rest import Client
-from utils.config_loader import ConfigLoader
 from utils.generic import configure_logger
+from utils.settings_accumalator import SettingsAccumalator
 
 
 class Launcher:
     def __init__(self):
         self.logger = getLogger("uvicorn")
         configure_logger(self.logger)
-        self.configs = None
+        self.settings = None
 
         self.launch()
 
@@ -31,15 +31,15 @@ class Launcher:
         app.include_router(router)
 
     def launch(self):
-        self.logger.info(f'Setting up config..')
-        self.configs = ConfigLoader().configs
-        self.logger.setLevel(getLevelName(self.configs.logging.level))
+        self.logger.info(f'Accumalating all settings like configs and secrets..')
+        self.settings = SettingsAccumalator().settings
+        self.logger.setLevel(getLevelName(self.settings.configs_app.logging_level))
 
         self.logger.info('Creating Twilio client..')
-        twilio_client = Client(self.configs.twilio.account_sid, self.configs.twilio.auth_token)
+        twilio_client = Client(self.settings.secrets_twilio.account_sid, self.settings.secrets_twilio.auth_token)
 
         self.logger.info('Creating user DAO..')
-        users_dao = MongodbDao(self.configs)
+        users_dao = MongodbDao(self.settings)
 
         self.logger.info('Temporary code..')
         # user1_dto: UsersDto = UsersDto("John Doe", "+19999999999")
