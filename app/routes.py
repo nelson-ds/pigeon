@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from fastapi import APIRouter, Request, status
+from fastapi import APIRouter, Request, responses, status
 
 router = APIRouter()
 
@@ -19,4 +19,5 @@ async def receive_sms(request: Request):
     sms_from = form.get('From')
     sms_body = form.get('Body')
     logger.info(f'Recieved sms from {sms_from} with body" {sms_body}')
-    return "Received SMS"
+    response_data = {"message": "Received SMS"}
+    return responses.JSONResponse(content=response_data, media_type="application/json")
