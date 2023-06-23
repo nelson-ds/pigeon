@@ -61,7 +61,7 @@ Trip planning service which leverages AI recommendations as well as human travel
     - Obtain twilio signature by following documentation in `routes.py`
     - Send a curl request using token and twilio signature; example -
       ```
-      curl -X POST \
+      curl -i -X POST \
       -H "Authorization: Digest dGVzdDp0ZXN0" \
       -H "X-Twilio-Signature: ly8+Js0fQVOqrJo08rEpcTQsSgQ=" \s
       -d "To=%2B1234567890" -d "From=%2B0987654321" -d "Body=Hello, pigeon" \
@@ -69,6 +69,7 @@ Trip planning service which leverages AI recommendations as well as human travel
       ```
 
 ### Work in progress
+- FIXME: add security feature for digest auth
 - TODO: add security feature to configure rate limiting for webhook (firewall/server)
 - TODO: add functionality for basic flow for on-boarding user
 - TODO: add functionality for user to user communication

@@ -9,8 +9,6 @@ from twilio.request_validator import RequestValidator
 from utils.generic import logger
 from utils.settings_accumalator import Settings
 
-http_digest = HTTPDigest()
-
 
 class Routes():
     def __init__(self, settings: Settings):
@@ -44,8 +42,8 @@ class Routes():
             twiml_empty_response = "<Response/>"
             return responses.PlainTextResponse(content=twiml_empty_response, media_type="text/xml")
 
-    def authorize_digest(self, credentials: HTTPAuthorizationCredentials = Security(http_digest)):
-        incoming_token = credentials.credentials
+    def authorize_digest(self, credentials: HTTPAuthorizationCredentials = Security(HTTPDigest(auto_error=False))):
+        incoming_token = credentials.credentials if credentials is not None else ''
         expected_username = self.settings.secrets_app.app_username
         expected_password = self.settings.secrets_app.app_password
 
@@ -69,7 +67,7 @@ class Routes():
         Example:
             N/A
         Validation:
-            logger.debug(f'signature expected: {validator.compute_signature(request_url = request.url._url, sorted_params)}')
+            logger.debug(f'signature expected: {validator.compute_signature(request.url._url, sorted_params)}')
         """
         validator = RequestValidator(self.settings.secrets_twilio.auth_token)
         request_url = request.url._url
