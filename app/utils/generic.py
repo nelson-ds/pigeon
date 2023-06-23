@@ -25,7 +25,7 @@ def file_to_dict(file_path: str, delimiter: str):
 
 def configure_logger():
     logger = getLogger(__name__)
-    formatter = Formatter('%(asctime)s %(levelname)s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+    formatter = Formatter('%(asctime)s %(levelname)s %(message)s\n', datefmt='%Y-%m-%d %H:%M:%S')
     handler = StreamHandler()
     handler.setFormatter(formatter)
     logger.handlers.clear()

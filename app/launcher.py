@@ -3,8 +3,7 @@ from logging import getLevelName
 from data_models.dao.mongodb_dao import MongodbDao
 from data_models.dto.users_dto import UsersDto
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from routes import Routes
+from routes import LoggingCORSMiddleware, Routes
 from send_sms import send_sms
 from twilio.rest import Client
 from utils.generic import logger
@@ -19,11 +18,8 @@ class Launcher:
     def configure_app(self, app):
         logger.info('Configuring FastAPI app..')
         app.add_middleware(
-            CORSMiddleware,
-            allow_origins=['*'],
-            allow_credentials=True,
-            allow_methods=['*'],
-            allow_headers=['*'],
+            LoggingCORSMiddleware,
+            logger=logger
         )
         routes = Routes(self.settings)
         app.include_router(routes.router)
