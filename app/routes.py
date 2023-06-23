@@ -88,5 +88,7 @@ class LoggingCORSMiddleware(CORSMiddleware):
 
     async def __call__(self, scope, receive, send):
         headers = dict(scope["headers"])
+        body = await receive()
         self.logger.info(f"Headers: {headers}")
+        self.logger.info(f"Body: {body}")
         await super().__call__(scope, receive, send)
