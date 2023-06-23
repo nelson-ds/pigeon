@@ -79,7 +79,11 @@ class Routes():
 
 class LoggingCORSMiddleware(CORSMiddleware):
     def __init__(self, app: FastAPI, logger: logger):
-        super().__init__(app)
+        super().__init__(app,
+                         allow_origins=['*'],
+                         allow_credentials=True,
+                         allow_methods=['*'],
+                         allow_headers=['*'],)
         self.logger = logger
 
     async def __call__(self, scope, receive, send):
