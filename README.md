@@ -55,8 +55,9 @@ Trip planning service which leverages AI recommendations as well as human travel
 
   - Simulate Twilio webhook to receive sms:
     ```
-    curl -X POST -H "X-Twilio-Signature: ly8+Js0fQVOqrJo08rEpcTQsSgQ="
-    -d "To=%2B1234567890" -d "From=%2B0987654321" -d "Body=Hello, pigeon" http://localhost:8000/sm
+    curl -X POST -H "X-Twilio-Signature: ly8+Js0fQVOqrJo08rEpcTQsSgQ=" \
+    -d "To=%2B1234567890" -d "From=%2B0987654321" -d "Body=Hello, pigeon" \
+    http://localhost:8000/sms
     ```
 
 ### Work in progress

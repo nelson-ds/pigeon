@@ -1,8 +1,7 @@
 from logging import getLogger
 
 from twilio.rest import Client
-
-logger = getLogger("uvicorn")
+from utils.generic import logger
 
 
 def send_sms(twilio_client: Client, from_: str, to: str):

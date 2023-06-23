@@ -64,8 +64,8 @@ class Settings:
 
     class SecretsApp:
         def __init__(self, app_secrets: dict):
-            self.ip_address = app_secrets['ip_address']
-            self.web_protocol = app_secrets['web_protocol']
+            self.app_username = app_secrets['app_username']
+            self.app_password = app_secrets['app_password']
 
     class SecretsMongodb:
         def __init__(self, db_secrets: dict):

@@ -1,3 +1,4 @@
 {
-    "ip_address": "<ip_address_of_your_app>"
+    "app_username": "<username_of_your_app>",
+    "app_password": "<password_of_your_app>"
 }

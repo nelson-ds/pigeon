@@ -1,11 +1,8 @@
-from logging import getLogger
-
 from fastapi import APIRouter, HTTPException, Request, responses, status
 from starlette.datastructures import FormData
 from twilio.request_validator import RequestValidator
+from utils.generic import logger
 from utils.settings_accumalator import Settings
-
-logger = getLogger("uvicorn")
 
 
 class Routes():
@@ -54,10 +51,10 @@ class Routes():
         Example:
             N/A
         Validation:
-            print(twilio_signature_recieved, validator.compute_signature(webhook_receive_sms, sorted_params))
+            logger.debug(f'signature expected: {validator.compute_signature(request_url = request.url._url, sorted_params)}')
         """
         validator = RequestValidator(self.settings.secrets_twilio.auth_token)
-        webhook_receive_sms = f"{self.settings.secrets_app.web_protocol}://{self.settings.secrets_app.ip_address}{self.route_receive_sms}"
+        request_url = request.url._url
         sorted_params = dict(sorted(form.items(), key=lambda x: x[0]))
         twilio_signature_recieved = request.headers.get('X-Twilio-Signature')
-        return validator.validate(webhook_receive_sms, sorted_params, twilio_signature_recieved)
+        return validator.validate(request_url, sorted_params, twilio_signature_recieved)

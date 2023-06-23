@@ -1,5 +1,7 @@
 from json import dump, load
-from logging import Formatter, StreamHandler, getLevelName
+from logging import Formatter, StreamHandler, getLevelName, getLogger
+
+logger = None
 
 
 def read_json(json_path_str: str):
@@ -21,10 +23,15 @@ def file_to_dict(file_path: str, delimiter: str):
     return file_dict
 
 
-def configure_logger(logger):
+def configure_logger():
+    logger = getLogger(__name__)
     formatter = Formatter('%(asctime)s %(levelname)s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
     handler = StreamHandler()
     handler.setFormatter(formatter)
     logger.handlers.clear()
     logger.addHandler(handler)
     logger.setLevel(getLevelName('DEBUG'))
+    return logger
+
+
+logger = configure_logger()

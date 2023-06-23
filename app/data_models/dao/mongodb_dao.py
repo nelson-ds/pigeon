@@ -1,10 +1,6 @@
-from logging import getLogger
-
 from data_models.dto.users_dto import UsersDto
 from pymongo import MongoClient
 from utils.settings_accumalator import Settings
-
-logger = getLogger('uvicorn')
 
 
 class MongodbDao:
