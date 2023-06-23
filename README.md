@@ -61,10 +61,14 @@ Trip planning service which leverages AI recommendations as well as human travel
     ```
 
 ### Work in progress
-- FIXME: authenticate webhook validity via webhook signature and http auth 
-- TODO: configure rate limiting for webhook in firewall
-- TODO: create flow for on-boarding user
+- TODO: add security feature to have webhook authenticate via http digest auth 
+- TODO: add security feature to configure rate limiting for webhook (firewall/server)
+- TODO: add functionality for basic flow for on-boarding user
+- TODO: add functionality for user to user communication
+- TODO: create landing page with [basic usage guide, git project, feedback]
+- TODO: add functionality for user to AI (ChatGPT) communication
+- TODO: create LLM from scratch and integrate it
 - TODO: add unit tests
-- TODO: sanitize input to avoid injection attacks
-- TODO: encrypt mongodb data at rest
+- TODO: add security feature to sanitize input to avoid injection attacks
+- TODO: add security feature to encrypt mongodb data at rest
 - TODO: peruse drive use-cases
