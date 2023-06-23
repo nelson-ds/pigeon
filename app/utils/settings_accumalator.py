@@ -1,11 +1,8 @@
-from logging import getLogger
 from os import environ
 from pprint import pformat
 
 from dotenv import load_dotenv
-from utils.generic import create_json, file_to_dict, read_json
-
-logger = getLogger('uvicorn')
+from utils.generic import create_json, file_to_dict, logger, read_json
 
 env_configs_file = '/pigeon/.env'
 app_configs_file = '/pigeon/app/configs/configs.json'
