@@ -2,6 +2,7 @@
     "dev": {
         "app": {
             "uvicorn_reload": true,
+            "logging_format_minimized": true,
             "logging_level": "DEBUG"
         },
         "mongodb": {
@@ -11,6 +12,7 @@
     "stage": {
         "app": {
             "uvicorn_reload": false,
+            "logging_format_minimized": false,
             "logging_level": "INFO"
         },
         "mongodb": {

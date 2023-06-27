@@ -1,12 +1,10 @@
-from logging import getLevelName
-
 from data_models.dao.mongodb_dao import MongodbDao
 from data_models.dto.users_dto import UsersDto
 from fastapi import FastAPI
 from routes import LoggingCORSMiddleware, Routes
 from send_sms import send_sms
 from twilio.rest import Client
-from utils.generic import logger
+from utils.generic import custom_logger, logger
 from utils.settings_accumalator import SettingsAccumalator
 
 
@@ -27,7 +25,8 @@ class Launcher:
     def launch(self):
         logger.info('Accumalating all settings like configs and secrets..')
         self.settings = SettingsAccumalator().settings
-        logger.setLevel(getLevelName(self.settings.configs_app.logging_level))
+        custom_logger.change_formatter(minimized=self.settings.configs_app.logging_format_minimized)
+        custom_logger.change_logging_level(root_logging_level=self.settings.configs_app.logging_level)
 
         logger.info('Creating Twilio client..')
         twilio_client = Client(self.settings.secrets_twilio.account_sid, self.settings.secrets_twilio.auth_token)

@@ -19,34 +19,44 @@ class CustomLogger():
         self._apply()
 
     def _apply(self):
-        format_dev = "%(name)s %(message)s"
-        format_prod = "%(asctime)s %(process)s %(levelname)s %(name)s %(module)s %(funcName)s %(lineno)s %(message)s"
-
         self.logging_config = {
             "version": 1,
             "disable_existing_loggers": False,
             "formatters": {
                 "json": {
                     "()": self.CustomJsonFormatter,
-                    "format": format_dev,
                     "datefmt": "%Y-%m-%dT%H:%M:%S%z"
                 }
             },
             "handlers": {
                 "console": {
-                    "level": "DEBUG",
                     "class": "logging.StreamHandler",
                     "formatter": "json",
                 }
             },
             "root": {
                 "handlers": ["console"],
-                "level": "DEBUG"
+                "level": "INFO"
             }
         }
 
         logging.config.dictConfig(self.logging_config)
         self.logger = logging.getLogger(__name__)
+        self.change_formatter()
+        self.change_logging_level()
+
+    def change_formatter(self, minimized=True):
+        format_minimized = "%(levelname)s %(name)s %(message)s"
+        format_default = "%(asctime)s %(process)s %(levelname)s %(name)s %(module)s %(funcName)s %(lineno)s %(message)s"
+        if minimized:
+            self.logging_config['formatters']['json']['format'] = format_minimized
+        else:
+            self.logging_config['formatters']['json']['format'] = format_default
+        logging.config.dictConfig(self.logging_config)
+
+    def change_logging_level(self, root_logging_level=logging.INFO):
+        self.logging_config['root']['level'] = root_logging_level
+        logging.config.dictConfig(self.logging_config)
 
 
 def read_json(json_path_str: str):

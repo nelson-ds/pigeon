@@ -69,7 +69,6 @@ Trip planning service which leverages AI recommendations as well as human travel
       ```
 
 ### Work in progress
-- FIXME: add functionality (logging) to get root logging level from env and format from app config
 - FIXME: add functionality (middleware) to capture incoming & outgoing request via cors middleware
 - TODO: add functionality (security) for digest auth
 - TODO: add functionality (security) to configure rate limiting for webhook (firewall/server)

@@ -14,12 +14,12 @@ combined_configs_file = '/pigeon/secrets/tmp_runtime_configs.json'
 class ConfigsEnv:
     def __init__(self):
         load_dotenv(env_configs_file)
-        self.environment = environ.get("ENVIRONMENT")
-        self.app_port_number = int(environ.get("APP_PORT_NUMBER"))
+        self.environment = environ.get('ENVIRONMENT')
+        self.app_port_number = int(environ.get('APP_PORT_NUMBER'))
         self.mongodb_database = environ.get('MONGO_INITDB_DATABASE')
         self.mongodb_database_auth = environ.get('MONGO_AUTH_DATABASE')
-        self.mongodb_port_number = int(environ.get("MONGODB_PORT_NUMBER"))
-        self.mongodb_container_name = environ.get("MONGODB_CONTAINER_NAME")
+        self.mongodb_port_number = int(environ.get('MONGODB_PORT_NUMBER'))
+        self.mongodb_container_name = environ.get('MONGODB_CONTAINER_NAME')
 
 
 class SettingsAccumalator:
@@ -52,6 +52,7 @@ class Settings:
     class ConfigsApp:
         def __init__(self, app_configs: dict):
             self.uvicorn_reload = app_configs['uvicorn_reload']
+            self.logging_format_minimized = bool(app_configs['logging_format_minimized'])
             self.logging_level = app_configs['logging_level']
 
     class ConfigsMongodb:
