@@ -1,5 +1,4 @@
 from os import environ
-from pprint import pformat
 
 from dotenv import load_dotenv
 from utils.generic import create_json, file_to_dict, logger, read_json
@@ -37,7 +36,7 @@ class SettingsAccumalator:
         twilio_secrets = {'secrets_twilio': read_json(twilio_secrets_file)}
         combined_configs = {**env, **configs, **app_secrets, **mongodb_secrets, **twilio_secrets}
         create_json(combined_configs_file, combined_configs)
-        logger.info(f'All Configs: ${pformat(combined_configs)}')
+        logger.info(f'All Configs: {combined_configs}')
         return combined_configs
 
 

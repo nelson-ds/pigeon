@@ -1,7 +1,52 @@
+import logging
+import logging.config
 from json import dump, load
-from logging import Formatter, StreamHandler, getLevelName, getLogger
+
+from pythonjsonlogger import jsonlogger
 
 logger = None
+
+
+class CustomLogger():
+
+    class CustomJsonFormatter(jsonlogger.JsonFormatter):
+        def add_fields(self, log_record, record, message_dict):
+            super().add_fields(log_record, record, message_dict)
+
+    def __init__(self):
+        self.logging_config = None
+        self.logger = None
+        self._apply()
+
+    def _apply(self):
+        format_dev = "%(name)s %(message)s"
+        format_prod = "%(asctime)s %(process)s %(levelname)s %(name)s %(module)s %(funcName)s %(lineno)s %(message)s"
+
+        self.logging_config = {
+            "version": 1,
+            "disable_existing_loggers": False,
+            "formatters": {
+                "json": {
+                    "()": self.CustomJsonFormatter,
+                    "format": format_dev,
+                    "datefmt": "%Y-%m-%dT%H:%M:%S%z"
+                }
+            },
+            "handlers": {
+                "console": {
+                    "level": "DEBUG",
+                    "class": "logging.StreamHandler",
+                    "formatter": "json",
+                }
+            },
+            "root": {
+                "handlers": ["console"],
+                "level": "DEBUG"
+            }
+        }
+
+        logging.config.dictConfig(self.logging_config)
+        self.logger = logging.getLogger(__name__)
 
 
 def read_json(json_path_str: str):
@@ -23,15 +68,5 @@ def file_to_dict(file_path: str, delimiter: str):
     return file_dict
 
 
-def configure_logger():
-    logger = getLogger(__name__)
-    formatter = Formatter('%(asctime)s %(levelname)s %(message)s\n', datefmt='%Y-%m-%d %H:%M:%S')
-    handler = StreamHandler()
-    handler.setFormatter(formatter)
-    logger.handlers.clear()
-    logger.addHandler(handler)
-    logger.setLevel(getLevelName('DEBUG'))
-    return logger
-
-
-logger = configure_logger()
+custom_logger = CustomLogger()
+logger = custom_logger.logger

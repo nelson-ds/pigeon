@@ -69,15 +69,17 @@ Trip planning service which leverages AI recommendations as well as human travel
       ```
 
 ### Work in progress
-- FIXME: log incoming request body using cors middleware
-- FIXME: add security feature for digest auth
-- TODO: add security feature to configure rate limiting for webhook (firewall/server)
-- TODO: add functionality for basic flow for on-boarding user
-- TODO: add functionality for user to user communication
-- TODO: create landing page with [basic usage guide, git project, feedback]
-- TODO: add functionality for user to AI (ChatGPT) communication
-- TODO: create LLM from scratch and integrate it
+- FIXME: add functionality (logging) to get root logging level from env and format from app config
+- FIXME: add functionality (middleware) to capture incoming & outgoing request via cors middleware
+- TODO: add functionality (security) for digest auth
+- TODO: add functionality (security) to configure rate limiting for webhook (firewall/server)
+- TODO: create feature for basic flow for on-boarding user
+- TODO: create feature for user to user communication
+- TODO: create feature for landing page with [basic usage guide, git project, feedback]
+- TODO: create feature for user to AI (ChatGPT) communication
+- TODO: create feature for LLM from scratch and integrate it
 - TODO: add unit tests
 - TODO: add security feature to sanitize input to avoid injection attacks
 - TODO: add security feature to encrypt mongodb data at rest
+- TODO: peruse logging module
 - TODO: peruse drive use-cases

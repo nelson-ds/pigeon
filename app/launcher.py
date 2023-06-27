@@ -15,7 +15,7 @@ class Launcher:
         self.settings = None
         self.launch()
 
-    def configure_app(self, app):
+    def configure_app(self, app: FastAPI):
         logger.info('Configuring FastAPI app..')
         app.add_middleware(
             LoggingCORSMiddleware,
@@ -25,7 +25,7 @@ class Launcher:
         app.include_router(routes.router)
 
     def launch(self):
-        logger.info(f'Accumalating all settings like configs and secrets..')
+        logger.info('Accumalating all settings like configs and secrets..')
         self.settings = SettingsAccumalator().settings
         logger.setLevel(getLevelName(self.settings.configs_app.logging_level))
 
@@ -40,7 +40,7 @@ class Launcher:
         # inserted_id = users_dao.insert_user(user1_dto)
         # logger.info(f"User inserted in DB with ID: {inserted_id}")
         user1: UsersDto = users_dao.get_user_by_name('John Doe')
-        logger.info(f"User retrieved from DB: {user1}")
+        logger.info(f'User retrieved from DB: {user1}')
         users_dao.close_connection()
         # send_sms(twilio_client, self.configs.twilio.sending_number, user1.phone_number)
 
