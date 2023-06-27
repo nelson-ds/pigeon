@@ -17,7 +17,7 @@ class Routes():
         self.router = APIRouter()
         self.route_receive_sms = "/sms"
 
-        @self.router.get('/', status_code=status.HTTP_200_OK)
+        @self.router.get('/pigeon', status_code=status.HTTP_200_OK)
         async def root():
             return {'message': 'coooo'}
 
