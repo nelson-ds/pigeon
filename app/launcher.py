@@ -1,7 +1,8 @@
 from data_models.dao.mongodb_dao import MongodbDao
 from data_models.dto.users_dto import UsersDto
 from fastapi import FastAPI
-from routes import LoggingCORSMiddleware, Routes
+from middleware import RouterLoggingMiddleware
+from routes import Routes
 from send_sms import send_sms
 from twilio.rest import Client
 from utils.generic import custom_logger, logger
@@ -16,7 +17,7 @@ class Launcher:
     def configure_app(self, app: FastAPI):
         logger.info('Configuring FastAPI app..')
         app.add_middleware(
-            LoggingCORSMiddleware,
+            RouterLoggingMiddleware,
             logger=logger
         )
         routes = Routes(self.settings)

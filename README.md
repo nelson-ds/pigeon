@@ -69,9 +69,9 @@ Trip planning service which leverages AI recommendations as well as human travel
       ```
 
 ### Work in progress
-- FIXME: add functionality (middleware) to capture incoming & outgoing request via cors middleware
 - TODO: add functionality (security) for digest auth
 - TODO: add functionality (security) to configure rate limiting for webhook (firewall/server)
+- TODO: add functionality (security) for ssh mac whitelist for stage & rpi
 - TODO: create feature for basic flow for on-boarding user
 - TODO: create feature for user to user communication
 - TODO: create feature for landing page with [basic usage guide, git project, feedback]
@@ -80,5 +80,5 @@ Trip planning service which leverages AI recommendations as well as human travel
 - TODO: add unit tests
 - TODO: add security feature to sanitize input to avoid injection attacks
 - TODO: add security feature to encrypt mongodb data at rest
-- TODO: peruse logging module
+- TODO: peruse and document logging module & middleware
 - TODO: peruse drive use-cases

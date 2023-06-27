@@ -1,11 +1,11 @@
 import base64
 import secrets
 
-from fastapi import (APIRouter, Depends, FastAPI, HTTPException, Request,
-                     Security, responses, status)
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import (APIRouter, Depends, HTTPException, Request, Security,
+                     responses, status)
 from fastapi.security import HTTPAuthorizationCredentials, HTTPDigest
 from starlette.datastructures import FormData
+from starlette.types import Message
 from twilio.request_validator import RequestValidator
 from utils.generic import logger
 from utils.settings_accumalator import Settings
@@ -75,18 +75,3 @@ class Routes():
         sorted_params = dict(sorted(form.items(), key=lambda x: x[0]))
         twilio_signature_recieved = request.headers.get('X-Twilio-Signature')
         return validator.validate(request_url, sorted_params, twilio_signature_recieved)
-
-
-class LoggingCORSMiddleware(CORSMiddleware):
-    def __init__(self, app: FastAPI, logger: logger):
-        super().__init__(app,
-                         allow_origins=['*'],
-                         allow_credentials=True,
-                         allow_methods=['*'],
-                         allow_headers=['*'],)
-        self.logger = logger
-
-    async def __call__(self, scope, receive, send):
-        headers = dict(scope["headers"])
-        self.logger.info(f'Headers: {headers}')
-        await super().__call__(scope, receive, send)
