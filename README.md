@@ -69,8 +69,8 @@ Trip planning service which leverages AI recommendations as well as human travel
       ```
 
 ### Work in progress
-- TODO: add functionality (security) for digest auth
-- TODO: add functionality (security) to configure rate limiting for webhook (firewall/server)
+- FIXME: add functionality (security) for digest auth & document (basic + digest)
+- TODO: add functionality (security) to configure rate limiting for webhook at application level
 - TODO: add functionality (security) for ssh mac whitelist for stage & rpi
 - TODO: create feature for basic flow for on-boarding user
 - TODO: create feature for user to user communication

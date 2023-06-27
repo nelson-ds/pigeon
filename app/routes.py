@@ -1,4 +1,5 @@
 import base64
+import hashlib
 import secrets
 
 from fastapi import (APIRouter, Depends, HTTPException, Request, Security,
@@ -21,7 +22,7 @@ class Routes():
         async def root():
             return {'message': 'coooo'}
 
-        @self.router.post(self.route_receive_sms, dependencies=[Depends(self._authorize)])
+        @self.router.post(self.route_receive_sms, dependencies=[Depends(self._authorize_digest)])
         async def receive_sms(request: Request):
             form = await request.form()
 
@@ -53,6 +54,24 @@ class Routes():
 
         if not correct_token:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect token", headers={'WWW-Authenticate': 'Basic'})
+
+    def _authorize_digest(self, credentials: HTTPAuthorizationCredentials = Security(HTTPDigest(auto_error=False))):
+        incoming_token = credentials.credentials if credentials is not None else ''
+        expected_username = self.settings.secrets_app.app_username
+        expected_password = self.settings.secrets_app.app_password
+        realm = 'TestRealm'
+
+        expected_token = hashlib.md5(f'{expected_username}:{realm}:{expected_password}'.encode('utf-8')).hexdigest()
+        logger.info(f'expected_token: {expected_token}')
+        correct_token = secrets.compare_digest(incoming_token, expected_token)
+
+        if not correct_token:
+            challenge_params = f'realm="{realm}"'
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Incorrect digest token",
+                headers={"WWW-Authenticate": f"Digest {challenge_params}"}
+            )
 
     def validate_twilio_signature(self, request: Request, form: FormData):
         """
