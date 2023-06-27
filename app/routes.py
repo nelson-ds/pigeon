@@ -21,7 +21,7 @@ class Routes():
         async def root():
             return {'message': 'coooo'}
 
-        @self.router.post(self.route_receive_sms, dependencies=[Depends(self.authorize_digest)])
+        @self.router.post(self.route_receive_sms, dependencies=[Depends(self._authorize)])
         async def receive_sms(request: Request):
             form = await request.form()
 
@@ -43,16 +43,16 @@ class Routes():
             twiml_empty_response = "<Response/>"
             return responses.PlainTextResponse(content=twiml_empty_response, media_type="text/xml")
 
-    def authorize_digest(self, credentials: HTTPAuthorizationCredentials = Security(HTTPDigest(auto_error=False))):
+    def _authorize(self, credentials: HTTPAuthorizationCredentials = Security(HTTPDigest(auto_error=False))):
         incoming_token = credentials.credentials if credentials is not None else ''
         expected_username = self.settings.secrets_app.app_username
         expected_password = self.settings.secrets_app.app_password
 
-        expected_token = base64.standard_b64encode(bytes(f"{expected_username}:{expected_password}", encoding="UTF-8"))
-        correct_token = secrets.compare_digest(bytes(incoming_token, encoding="UTF-8"), expected_token)
+        expected_token = base64.standard_b64encode(bytes(f"{expected_username}:{expected_password}", encoding='UTF-8'))
+        correct_token = secrets.compare_digest(bytes(incoming_token, encoding='UTF-8'), expected_token)
 
         if not correct_token:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect digest token", headers={"WWW-Authenticate": "Digest"})
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect token", headers={'WWW-Authenticate': 'Basic'})
 
     def validate_twilio_signature(self, request: Request, form: FormData):
         """
