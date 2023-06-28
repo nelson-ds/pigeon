@@ -1,5 +1,6 @@
 from data_models.dto.users_dto import UsersDto
 from pymongo import MongoClient
+from utils.exceptions import MongoDbUserNotFoundException
 from utils.settings_accumalator import Settings
 
 
@@ -23,6 +24,8 @@ class MongodbDao:
 
     def get_user_by_phone_number(self, phone_number) -> UsersDto:
         user = self.collection_users.find_one({"phone_number": phone_number})
+        if user is None:
+            raise MongoDbUserNotFoundException
         return UsersDto(**user)
 
     def get_user_by_name(self, name) -> UsersDto:

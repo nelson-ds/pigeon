@@ -69,16 +69,16 @@ Trip planning service which leverages AI recommendations as well as human travel
       ```
 
 ### Work in progress
-- TODO: add functionality (security) to configure rate limiting for webhook at application level
-- TODO: add functionality (security) for ssh mac whitelist for stage & rpi
-- TODO: create feature for basic flow for on-boarding user
+- FIXME: create feature for basic flow for on-boarding user
 - TODO: create feature for user to user communication
 - TODO: create feature for landing page with [basic usage guide, git project, feedback]
+- TODO: add functionality (security) for ssh mac whitelist for stage & rpi
 - TODO: create feature for user to AI (ChatGPT) communication
 - TODO: create feature for LLM from scratch and integrate it
-- TODO: add unit tests
-- TODO: add security feature to get https certification
-- TODO: add security feature to sanitize input to avoid injection attacks
-- TODO: add security feature to encrypt mongodb data at rest
+- TODO: create feature (security) to get https certification
+- TODO: add functionality for unit tests
+- TODO: add functionality (security) to configure rate limiting for webhook at application level
+- TODO: add functionality (security) to sanitize input to avoid injection attacks
+- TODO: add functionality (security) to encrypt mongodb data at rest
 - TODO: peruse and document [auth, logging, middleware]
 - TODO: peruse drive use-cases

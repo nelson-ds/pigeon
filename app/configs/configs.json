@@ -3,7 +3,7 @@
         "app": {
             "uvicorn_reload": true,
             "logging_format_minimized": true,
-            "logging_level": "DEBUG"
+            "logging_level": "INFO"
         },
         "mongodb": {
             "collection_users": "users"
@@ -13,7 +13,7 @@
         "app": {
             "uvicorn_reload": false,
             "logging_format_minimized": false,
-            "logging_level": "INFO"
+            "logging_level": "DEBUG"
         },
         "mongodb": {
             "collection_users": "users"
