@@ -34,7 +34,7 @@ class RouterLoggingMiddleware(BaseHTTPMiddleware):
         logging_dict["request"] = request_dict
         logging_dict["response"] = response_dict
 
-        self._logger.debug(logging_dict)
+        self._logger.info(logging_dict)
 
         return response
 
