@@ -1,9 +1,6 @@
-import base64
-import secrets
-
 from fastapi import (APIRouter, Depends, HTTPException, Request, Security,
                      responses, status)
-from fastapi.security import HTTPAuthorizationCredentials, HTTPDigest
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from starlette.datastructures import FormData
 from twilio.request_validator import RequestValidator
 from utils.generic import logger
@@ -42,16 +39,14 @@ class Routes():
             twiml_empty_response = "<Response/>"
             return responses.PlainTextResponse(content=twiml_empty_response, media_type="text/xml")
 
-    def _authorize(self, credentials: HTTPAuthorizationCredentials = Security(HTTPDigest(auto_error=False))):
-        incoming_token = credentials.credentials if credentials is not None else ''
+    def _authorize(self, credentials: HTTPBasicCredentials = Security(HTTPBasic(auto_error=False))):
+        incoming_username = credentials.username if credentials else ''
+        incoming_password = credentials.password if credentials else ''
         expected_username = self.settings.secrets_app.app_username
         expected_password = self.settings.secrets_app.app_password
-
-        expected_token = base64.standard_b64encode(bytes(f"{expected_username}:{expected_password}", encoding='UTF-8'))
-        correct_token = secrets.compare_digest(bytes(incoming_token, encoding='UTF-8'), expected_token)
-
+        correct_token = incoming_username == expected_username and incoming_password == expected_password
         if not correct_token:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect token", headers={'WWW-Authenticate': 'Basic'})
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect credentials", headers={'WWW-Authenticate': 'Basic'})
 
     def validate_twilio_signature(self, request: Request, form: FormData):
         """

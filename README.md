@@ -62,14 +62,13 @@ Trip planning service which leverages AI recommendations as well as human travel
     - Send a curl request using token and twilio signature; example -
       ```
       curl -i -X POST \
-      -H "Authorization: Digest dGVzdDp0ZXN0" \
-      -H "X-Twilio-Signature: ly8+Js0fQVOqrJo08rEpcTQsSgQ=" \s
+      -H "Authorization: Basic dGVzdDp0ZXN0" \
+      -H "X-Twilio-Signature: ly8+Js0fQVOqrJo08rEpcTQsSgQ=" \
       -d "To=%2B1234567890" -d "From=%2B0987654321" -d "Body=Hello, pigeon" \
       http://localhost:8000/sms
       ```
 
 ### Work in progress
-- FIXME: add functionality (security) for digest auth & document (basic + digest)
 - TODO: add functionality (security) to configure rate limiting for webhook at application level
 - TODO: add functionality (security) for ssh mac whitelist for stage & rpi
 - TODO: create feature for basic flow for on-boarding user
@@ -78,7 +77,8 @@ Trip planning service which leverages AI recommendations as well as human travel
 - TODO: create feature for user to AI (ChatGPT) communication
 - TODO: create feature for LLM from scratch and integrate it
 - TODO: add unit tests
+- TODO: add security feature to get https certification
 - TODO: add security feature to sanitize input to avoid injection attacks
 - TODO: add security feature to encrypt mongodb data at rest
-- TODO: peruse and document logging module & middleware
+- TODO: peruse and document [auth, logging, middleware]
 - TODO: peruse drive use-cases
