@@ -17,6 +17,7 @@ class RouterLoggingMiddleware(BaseHTTPMiddleware):
         The dispatch method takes in two arguments: request and call_next
             request contains information about the incoming request such as the headers, query parameters, and the body
             call_next is a callable that will pass the request on to the next middleware in the stack or to the final endpoint handler
+    Reference: https://medium.com/@dhavalsavalia/fastapi-logging-middleware-logging-requests-and-responses-with-ease-and-style-201b9aa4001a
     """
 
     def __init__(self, app: FastAPI, *, logger: logging.Logger) -> None:
