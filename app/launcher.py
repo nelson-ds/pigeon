@@ -1,5 +1,6 @@
 from data_models.dao.mongodb_dao import MongodbDao
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from twilio.rest import Client
 from utils.generic import custom_logger, logger
 from utils.settings_accumalator import SettingsAccumalator
@@ -34,6 +35,11 @@ class Launcher:
         )
         routes = Routes(self.settings, self.twilio_client, self.mongodb_dao)
         app.include_router(routes.router)
+        app.mount(
+            path=self.settings.configs_app.web_route_static,
+            app=StaticFiles(directory=self.settings.configs_app.web_static_dir),
+            name="static"
+        )
 
 
 app = FastAPI()

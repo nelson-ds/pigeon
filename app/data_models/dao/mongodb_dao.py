@@ -5,16 +5,16 @@ from utils.settings_accumalator import Settings
 
 
 class MongodbDao:
-    def __init__(self, configs: Settings):
+    def __init__(self, settings: Settings):
 
-        self.client = MongoClient(host=f'mongodb://{configs.configs_env.mongodb_container_name}',
-                                  port=configs.configs_env.mongodb_port_number,
-                                  username=configs.secrets_mongodb.username,
-                                  password=configs.secrets_mongodb.password,
-                                  authSource=configs.configs_env.mongodb_database_auth
+        self.client = MongoClient(host=f'mongodb://{settings.configs_env.mongodb_container_name}',
+                                  port=settings.configs_env.mongodb_port_number,
+                                  username=settings.secrets_mongodb.username,
+                                  password=settings.secrets_mongodb.password,
+                                  authSource=settings.configs_env.mongodb_database_auth
                                   )
-        self.db = self.client[f'{configs.configs_env.mongodb_database}']
-        self.collection_users = self.db[configs.configs_mongodb.collection_users]
+        self.db = self.client[f'{settings.configs_env.mongodb_database}']
+        self.collection_users = self.db[settings.configs_app.mongodb_collection_users]
 
     def insert_user(self, user: UsersDto):
         userDict = vars(user)

@@ -30,7 +30,10 @@ class SettingsAccumalator:
 
     def _combine_all_configs(self, configs_env: ConfigsEnv):
         env = {'env': vars(configs_env)}
-        configs = {'configs': read_json(app_configs_file)[configs_env.environment]}
+        configs_json = read_json(app_configs_file)
+        configs_common = configs_json['common']
+        configs_env = configs_json[configs_env.environment]
+        configs = {'configs': {**configs_common, **configs_env}}
         app_secrets = {'secrets_app': read_json(app_secrets_file)}
         mongodb_secrets = {'secrets_mongodb': file_to_dict(db_secrets_file, '=')}
         twilio_secrets = {'secrets_twilio': read_json(twilio_secrets_file)}
@@ -43,8 +46,7 @@ class SettingsAccumalator:
 class Settings:
     def __init__(self, configs_env: ConfigsEnv, combined_configs: dict):
         self.configs_env = configs_env
-        self.configs_app = self.ConfigsApp(combined_configs['configs']['app'])
-        self.configs_mongodb = self.ConfigsMongodb(combined_configs['configs']['mongodb'])
+        self.configs_app = self.ConfigsApp(combined_configs['configs'])
         self.secrets_app = self.SecretsApp(combined_configs['secrets_app'])
         self.secrets_mongodb = self.SecretsMongodb(combined_configs['secrets_mongodb'])
         self.secrets_twilio = self.SecretsTwilio(combined_configs['secrets_twilio'])
@@ -54,10 +56,13 @@ class Settings:
             self.uvicorn_reload = app_configs['uvicorn_reload']
             self.logging_format_minimized = bool(app_configs['logging_format_minimized'])
             self.logging_level = app_configs['logging_level']
-
-    class ConfigsMongodb:
-        def __init__(self, db_configs: dict):
-            self.collection_users = db_configs['collection_users']
+            self.mongodb_collection_users = app_configs['mongodb_collection_users']
+            self.web_route_home = app_configs['web_route_home']
+            self.web_route_sms = app_configs['web_route_sms']
+            self.web_route_static = app_configs['web_route_static']
+            self.web_static_dir = app_configs['web_static_dir']
+            self.web_templates_dir = app_configs['web_templates_dir']
+            self.web_template_home_file_name = app_configs['web_template_home_file_name']
 
     class SecretsApp:
         def __init__(self, app_secrets: dict):

@@ -3,6 +3,7 @@ from data_models.dao.mongodb_dao import MongodbDao
 from fastapi import (APIRouter, Depends, HTTPException, Request, Security,
                      responses, status)
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.templating import Jinja2Templates
 from starlette.datastructures import FormData
 from twilio.request_validator import RequestValidator
 from twilio.rest import Client as TwilioClient
@@ -16,13 +17,13 @@ class Routes():
         self.twilio_client = twilio_client
         self.mongodb_dao = mongodb_dao
         self.router = APIRouter()
-        self.route_receive_sms = "/sms"
+        self.templates = Jinja2Templates(directory=self.settings.configs_app.web_templates_dir)
 
-        @self.router.get('/pigeon', status_code=status.HTTP_200_OK)
-        async def root():
-            return {'message': 'coooo'}
+        @self.router.get(self.settings.configs_app.web_route_home)
+        async def get_home(request: Request):
+            return self.templates.TemplateResponse(self.settings.configs_app.web_template_home_file_name, {'request': request})
 
-        @self.router.post(self.route_receive_sms, dependencies=[Depends(self._authorize)])
+        @self.router.post(self.settings.configs_app.web_route_sms, dependencies=[Depends(self._authorize)])
         async def receive_sms(request: Request):
             form = await request.form()
             self.validate_twilio_signature(request, form)

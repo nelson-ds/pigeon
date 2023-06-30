@@ -1,22 +1,21 @@
 {
+    "common": {
+        "mongodb_collection_users": "users",
+        "web_route_home": "/",
+        "web_route_sms": "/sms",
+        "web_route_static": "/static",
+        "web_static_dir": "/pigeon/app/web_server/static/",
+        "web_templates_dir": "/pigeon/app/web_server/templates/",
+        "web_template_home_file_name": "index.html"
+    },
     "dev": {
-        "app": {
-            "uvicorn_reload": true,
-            "logging_format_minimized": true,
-            "logging_level": "INFO"
-        },
-        "mongodb": {
-            "collection_users": "users"
-        }
+        "uvicorn_reload": true,
+        "logging_format_minimized": true,
+        "logging_level": "INFO"
     },
     "stage": {
-        "app": {
-            "uvicorn_reload": false,
-            "logging_format_minimized": false,
-            "logging_level": "INFO"
-        },
-        "mongodb": {
-            "collection_users": "users"
-        }
+        "uvicorn_reload": false,
+        "logging_format_minimized": false,
+        "logging_level": "INFO"
     }
 }
