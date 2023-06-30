@@ -8,5 +8,10 @@ h1 {
 }
 
 p {
-    color: #e22727;
+    color: #345d67;
+}
+
+#pet-button {
+    font-size: 20px;
+    padding: 10px 20px;
 }

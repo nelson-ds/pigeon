@@ -70,7 +70,7 @@ Trip planning service which leverages AI recommendations as well as human travel
 
 ### Work in progress
 - FIXME: create feature for basic user on-boarding
-- FIXME: create feature for landing page with [basic usage guide, git project, feedback]
+- FIXME: create feature for landing page with [basic usage guide, git project in about, feedback, faqs]
 - TODO: create feature for user to user communication
 - TODO: add functionality (security) for ssh mac whitelist for stage & rpi
 - TODO: create feature for user to AI (ChatGPT) communication
