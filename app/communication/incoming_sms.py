@@ -44,9 +44,13 @@ class IncomingSms:
         try:
             inserted_id = self.mongodb_dao.insert_user(user_dto)
             logger.info(f"New user with phone number {self.sms_from} inserted in DB with ID: {inserted_id}")
+            self._new_user_onboarding()
             return user_dto
         except Exception as e:
             logger.error(f'Error while inserting new user in DB: {str(e)}')
             user_dto = None
         finally:
             return user_dto
+
+    def _new_user_onboarding(self):
+        logger.error(f'Triggered onboarding for new user..')
