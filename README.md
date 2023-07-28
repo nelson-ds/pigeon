@@ -69,11 +69,13 @@ Trip planning service which leverages AI recommendations as well as human travel
       ```
 
 ### Work in progress
+- FIXME: experiment with langchain LLMs and streamlit
 - TODO: create feature for basic user on-boarding
 - TODO: create feature for user to user communication
 - TODO: add functionality (security) for ssh mac whitelist for stage & rpi
 - TODO: create feature for landing page with [basic usage guide, git project in about, feedback, faqs]
-- TODO: create feature for user to AI (ChatGPT) communication
+- TODO: create feature for user to AI communication using langchain
+- TODO: create dev sandbox to interact with ai model using streamlit
 - TODO: create feature for LLM from scratch and integrate it
 - TODO: create feature (security) to get & install ssl certificate
 - TODO: add functionality for unit tests
