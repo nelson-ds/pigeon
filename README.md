@@ -72,6 +72,7 @@ Trip planning service which leverages AI recommendations as well as human travel
 - FIXME: experiment with [langchain](twilio.com/blog/3-ways-query-data-langchain-agents-python) LLMs
 - TODO: experiment with [gpt](youtube.com/watch?v=kCc8FmEb1nY) & tabs
 - TODO: experiment with [streamlit](streamlit.io/)
+- TODO: experiment with [local llama](github.com/ggerganov/llama.cpp)
 - TODO: create feature for basic user on-boarding
 - TODO: create feature for user to user communication
 - TODO: add functionality (security) for ssh mac whitelist for stage & rpi
