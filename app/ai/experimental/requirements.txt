@@ -34,7 +34,7 @@ importlib-metadata==6.8.0
 Jinja2==3.1.2
 jsonschema==4.18.4
 jsonschema-specifications==2023.7.1
-langchain==0.0.240
+langchain==0.0.308
 langchainplus-sdk==0.0.20
 langsmith==0.0.14
 lz4==4.3.2
