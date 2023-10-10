@@ -69,6 +69,7 @@ Trip planning service which leverages AI recommendations as well as human travel
       ```
 
 ### Work in progress
+- FIXME: create feature (security) to get & install ssl certificate & have domain name masked
 - FIXME: experiment with [langchain](twilio.com/blog/3-ways-query-data-langchain-agents-python) LLMs
 - TODO: experiment with [gpt](youtube.com/watch?v=kCc8FmEb1nY) & tabs
 - TODO: experiment with [streamlit](streamlit.io/)
@@ -80,7 +81,6 @@ Trip planning service which leverages AI recommendations as well as human travel
 - TODO: create feature for user to AI communication using langchain
 - TODO: create dev sandbox to interact with ai model using streamlit
 - TODO: create feature for LLM from scratch and integrate it
-- TODO: create feature (security) to get & install ssl certificate
 - TODO: add functionality for unit tests
 - TODO: add functionality (security) to configure rate limiting for webhook at application level
 - TODO: add functionality (security) to sanitize input to avoid injection attacks
