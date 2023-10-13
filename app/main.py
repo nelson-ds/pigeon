@@ -8,5 +8,7 @@ if __name__ == '__main__':
         host='0.0.0.0',
         port=launcher.settings.configs_env.app_port_number,
         reload=launcher.settings.configs_app.uvicorn_reload,
-        log_config=custom_logger.logging_config
+        log_config=custom_logger.logging_config,
+        ssl_certfile="./web_server/certificates/cert.pem",
+        ssl_keyfile="./web_server/certificates/key.pem"
     )
