@@ -27,7 +27,7 @@ Trip planning service which leverages AI recommendations as well as human travel
 2. [Make](https://www.gnu.org/software/make/): needs to be installed
 3. Environment variables: shoule be placed in `.env` (refer `.env_template/` for format)
 4. Secret variables: should be placed in `pigeon/secrets/` (refer `pigeon/secrets_template/` for format)
-5. Web page certificates should be placed in `pigeon/app/web_server/certificates` (optional)
+5. Web page certificates (cert.pem & key.pem) should be placed in `pigeon/app/web_server/certificates` (optional)
 6. Twilio configurations
     - Access your Twilio console, navigate to 'Phone Numbers -> Manage -> Active Numbers'
     - In the option for 'A message comes in', add the url `<ip_address_of_your_server_running_app>:<app_port>/sms`
