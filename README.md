@@ -70,7 +70,8 @@ Trip planning service which leverages AI recommendations as well as human travel
       ```
 
 ### Work in progress
-- FIXME: create feature (security) to get & install ssl certificate & have domain name masked
+- FIXME: create feature (infrastructure) to use nginx as reverse proxy
+- FIXME: create feature (security) to install ssl certificate
 - FIXME: experiment with [langchain](twilio.com/blog/3-ways-query-data-langchain-agents-python) LLMs
 - TODO: experiment with [gpt](youtube.com/watch?v=kCc8FmEb1nY) & tabs
 - TODO: experiment with [streamlit](streamlit.io/)
