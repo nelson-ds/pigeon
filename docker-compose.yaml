@@ -10,6 +10,8 @@ services:
       - ./.env:/pigeon/.env
       - ./secrets/${ENVIRONMENT}:/pigeon/secrets
       - ./app:/pigeon/app
+    env_file:
+      - .env
 
   mongodb:
     container_name: ${MONGODB_CONTAINER_NAME}
@@ -25,3 +27,4 @@ services:
       - MONGOSH=mongo --username $$MONGO_INITDB_ROOT_USERNAME --password $$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase $$MONGO_AUTH_DATABASE $$MONGO_INITDB_DATABASE
     env_file:
       - ./secrets/${ENVIRONMENT}/mongodb/mongodb_credentials.txt
+      - .env
