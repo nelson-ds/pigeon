@@ -29,8 +29,9 @@ Trip planning service which leverages AI recommendations as well as human travel
 4. Secret variables: should be placed in `pigeon/secrets/` (refer `pigeon/templates/secrets_template/` for format)
 5. Twilio configurations:
     - Access your Twilio console, navigate to 'Phone Numbers -> Manage -> Active Numbers'
-    - In the option for 'A message comes in', add the url `<ip_address_of_your_server_running_app>:<app_port>/sms`
-    - Note that the IP address you configure should be exposed to the internet
+    - In the option for 'A message comes in', add the url for this app
+    - URL format: `https://APP_USERNAME_CONFIGURED_IN_SECRETS:APP_PASSWORD_CONFIGURED_IN_SECRETS@YOUR_DOMAIN_URL/sms` (example https://test:test@pigeonmsg.com/sms)
+    - If you do not have a domain URL, you can also configure the IP address (exposed to the internet) of the remote server that the app is running on
 
 ### Optional Dependencies
 1. [Nginx](https://nginx.org/en/download.html): install this if you want to implement reverse proxy to serve app's web page
@@ -42,6 +43,12 @@ Trip planning service which leverages AI recommendations as well as human travel
 2. Stop the application: `make stop`
 
 ### Helper commands
+- Access app landing page:
+  ```
+  http://localhost:8001/sms (if not configured Nginx reverse proxy)
+  https://localhost (if configured Nginx reverse proxy)
+  ```
+
 - Access MongoDB cli: 
   ```
   docker exec -it mongodb bash
@@ -67,7 +74,7 @@ Trip planning service which leverages AI recommendations as well as human travel
       -H "Authorization: Basic dGVzdDp0ZXN0" \
       -H "X-Twilio-Signature: ly8+Js0fQVOqrJo08rEpcTQsSgQ=" \
       -d "To=%2B1234567890" -d "From=%2B0987654321" -d "Body=Hello, pigeon" \
-      http://localhost:8000/sms
+      https://localhost/sms
       ```
 
 ### Work in progress
