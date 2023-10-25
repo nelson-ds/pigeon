@@ -1,4 +1,4 @@
-# pigeon
+# [PigeonMsg](http://pigeonmsg.com)
 Trip planning service which leverages AI recommendations as well as human traveling experience
 
 ## How does this service work?
@@ -22,23 +22,24 @@ Trip planning service which leverages AI recommendations as well as human travel
 
 ## Development
 
-### Dependencies
-1. [Docker](https://www.docker.com/): needs to be installed
-2. [Make](https://www.gnu.org/software/make/): needs to be installed
-3. Environment variables: shoule be placed in `.env` (refer `.env_template/` for format)
-4. Secret variables: should be placed in `pigeon/secrets/` (refer `pigeon/secrets_template/` for format)
-5. Web page certificates (cert.pem & key.pem) should be placed in `pigeon/app/web_server/certificates` (optional)
-6. Twilio configurations
+### Mandatory Dependencies
+1. [Docker](https://www.docker.com/): needs to be installed for containerizing the app
+2. [Make](https://www.gnu.org/software/make/): needs to be installed for running app specific cli commands
+3. Environment variables: shoule be placed in `.env` (refer `pigeon/templates/.env_template/` for format)
+4. Secret variables: should be placed in `pigeon/secrets/` (refer `pigeon/templates/secrets_template/` for format)
+5. Twilio configurations:
     - Access your Twilio console, navigate to 'Phone Numbers -> Manage -> Active Numbers'
     - In the option for 'A message comes in', add the url `<ip_address_of_your_server_running_app>:<app_port>/sms`
     - Note that the IP address you configure should be exposed to the internet
 
+### Optional Dependencies
+1. [Nginx](https://nginx.org/en/download.html): install this if you want to implement reverse proxy to serve app's web page
+2. Nginx configurations: should be placed in `/usr/local/etc/nginx/` (refer `pigeon/templates/nginx_template/` for format)
 
 ### Working in development environment
 1. Start the application: `make start`
     - App can be accessed via `http://localhost:8000/`
 2. Stop the application: `make stop`
-
 
 ### Helper commands
 - Access MongoDB cli: 
