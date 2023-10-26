@@ -39,13 +39,12 @@ Trip planning service which leverages AI recommendations as well as human travel
 
 ### Working in development environment
 1. Start the application: `make start`
-    - App can be accessed via `http://localhost:8000/`
 2. Stop the application: `make stop`
 
 ### Helper commands
 - Access app landing page:
   ```
-  http://localhost:8001/sms (if not configured Nginx reverse proxy)
+  http://localhost:8001/ (if not configured Nginx reverse proxy)
   https://localhost (if configured Nginx reverse proxy)
   ```
 
@@ -78,22 +77,21 @@ Trip planning service which leverages AI recommendations as well as human travel
       ```
 
 ### Work in progress
-- FIXME: create feature (infrastructure) to use nginx as reverse proxy
-- FIXME: create feature (security) to install ssl certificate
-- FIXME: experiment with [langchain](twilio.com/blog/3-ways-query-data-langchain-agents-python) LLMs
-- TODO: experiment with [gpt](youtube.com/watch?v=kCc8FmEb1nY) & tabs
-- TODO: experiment with [streamlit](streamlit.io/)
-- TODO: experiment with [local llama](github.com/ggerganov/llama.cpp)
-- TODO: create feature for basic user on-boarding
-- TODO: create feature for user to user communication
-- TODO: add functionality (security) for ssh mac whitelist for stage & rpi
-- TODO: create feature for landing page with [basic usage guide, git project in about, feedback, faqs]
-- TODO: create feature for user to AI communication using langchain
-- TODO: create dev sandbox to interact with ai model using streamlit
-- TODO: create feature for LLM from scratch and integrate it
-- TODO: add functionality for unit tests
-- TODO: add functionality (security) to configure rate limiting for webhook at application level
-- TODO: add functionality (security) to sanitize input to avoid injection attacks
-- TODO: add functionality (security) to encrypt mongodb data at rest
-- TODO: peruse and document [auth, logging, middleware, jinja]
-- TODO: peruse drive use-cases
+1. FIXME: create feature (infrastructure) to use nginx as reverse proxy
+2. FIXME: create feature (security) to install ssl certificate
+3. FIXME: add functionality (security) for ssh mac whitelist for stage & rpi
+4. TODO: experiment with [langchain](twilio.com/blog/3-ways-query-data-langchain-agents-python) LLMs
+5. TODO: experiment with [gpt](youtube.com/watch?v=kCc8FmEb1nY) & tabs
+6. TODO: experiment with [local llama](github.com/ggerganov/llama.cpp)
+7. TODO: experiment with [streamlit](streamlit.io/) and create dev sandbox to interact with ai model via streamlit
+8. TODO: create feature for basic user on-boarding
+9. TODO: create feature for user to user communication
+10. TODO: create feature for landing page with [basic usage guide, git project in about, feedback, faqs]
+11. TODO: create feature for user to AI communication using langchain
+12. TODO: create feature for user to AI communication by building LLM from scratch
+13. TODO: add functionality (testing) for unit tests
+14. TODO: add functionality (security) to configure rate limiting for webhook at application level
+15. TODO: add functionality (security) to sanitize input to avoid injection attacks
+16. TODO: add functionality (security) to encrypt mongodb data at rest
+17. TODO: peruse and document [auth, logging, middleware, jinja]
+18. TODO: peruse drive use-cases
