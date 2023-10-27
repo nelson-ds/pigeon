@@ -66,32 +66,31 @@ Trip planning service which leverages AI recommendations as well as human travel
       ```
       python -c 'import base64; h = base64.urlsafe_b64encode (b"test:test"); print(h)'
       ```
-    - Obtain twilio signature by following documentation in `routes.py`
+    - Obtain twilio signature by following documentation in `routes.py/validate_twilio_signature`
     - Send a curl request using token and twilio signature; example -
       ```
       curl -i -X POST \
       -H "Authorization: Basic dGVzdDp0ZXN0" \
-      -H "X-Twilio-Signature: ly8+Js0fQVOqrJo08rEpcTQsSgQ=" \
+      -H "X-Twilio-Signature: 5rVrhMTIJCCg0FOvzCbH809pehE=" \
       -d "To=%2B1234567890" -d "From=%2B0987654321" -d "Body=Hello, pigeon" \
       https://localhost/sms
       ```
 
 ### Work in progress
-1. FIXME: create feature (infrastructure) to use nginx as reverse proxy
-2. FIXME: create feature (security) to install ssl certificate
-3. FIXME: add functionality (security) for ssh mac whitelist for stage & rpi
-4. TODO: experiment with [langchain](twilio.com/blog/3-ways-query-data-langchain-agents-python) LLMs
-5. TODO: experiment with [gpt](youtube.com/watch?v=kCc8FmEb1nY) & tabs
-6. TODO: experiment with [local llama](github.com/ggerganov/llama.cpp)
-7. TODO: experiment with [streamlit](streamlit.io/) and create dev sandbox to interact with ai model via streamlit
-8. TODO: create feature for basic user on-boarding
-9. TODO: create feature for user to user communication
-10. TODO: create feature for landing page with [basic usage guide, git project in about, feedback, faqs]
-11. TODO: create feature for user to AI communication using langchain
-12. TODO: create feature for user to AI communication by building LLM from scratch
-13. TODO: add functionality (testing) for unit tests
-14. TODO: add functionality (security) to configure rate limiting for webhook at application level
-15. TODO: add functionality (security) to sanitize input to avoid injection attacks
-16. TODO: add functionality (security) to encrypt mongodb data at rest
-17. TODO: peruse and document [auth, logging, middleware, jinja]
-18. TODO: peruse drive use-cases
+- FIXME: verify quick access to landing page
+- FIXME: add functionality (security) for ssh mac whitelist for stage & rpi
+- TODO: experiment with [langchain](twilio.com/blog/3-ways-query-data-langchain-agents-python) LLMs
+- TODO: experiment with [gpt](youtube.com/watch?v=kCc8FmEb1nY) & tabs
+- TODO: experiment with [local llama](github.com/ggerganov/llama.cpp)
+- TODO: experiment with [streamlit](streamlit.io/) and create dev sandbox to interact with ai model via streamlit
+- TODO: create feature for basic user on-boarding
+- TODO: create feature for user to user communication
+- TODO: create feature for landing page with [basic usage guide, git project in about, feedback, faqs]
+- TODO: create feature for user to AI communication using langchain
+- TODO: create feature for user to AI communication by building LLM from scratch
+- TODO: add functionality (testing) for unit tests
+- TODO: add functionality (security) to configure rate limiting for webhook at application level
+- TODO: add functionality (security) to sanitize input to avoid injection attacks
+- TODO: add functionality (security) to encrypt mongodb data at rest
+- TODO: peruse and document [auth, logging, middleware, jinja]
+- TODO: peruse drive use-cases

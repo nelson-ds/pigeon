@@ -52,10 +52,10 @@ class Routes():
         Raises:
             HTTPException
         Validation:
-            logger.debug(f'signature expected: {validator.compute_signature(request.url._url, sorted_params)}')
+            logger.debug(f'signature expected: {validator.compute_signature(request_url, sorted_params)}')
         """
         validator = RequestValidator(self.settings.secrets_twilio.auth_token)
-        request_url = request.url._url
+        request_url = self.get_url(request)
         sorted_params = dict(sorted(form.items(), key=lambda x: x[0]))
         twilio_signature_recieved = request.headers.get('X-Twilio-Signature')
         is_signature_valid = validator.validate(request_url, sorted_params, twilio_signature_recieved)
@@ -64,3 +64,16 @@ class Routes():
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Twilio signature")
         else:
             logger.debug(f'Signature validated for incoming request: {form}')
+
+    def get_url(self, request: Request):
+        """
+        Get the URI from the request and handles cases where the request is forwarded from reverse proxy
+        :param request: The request from Twilio
+        :returns: The URL of the request
+        :rtype: str
+        """
+        url = request.url._url
+        original_protocol = request.headers.get("X-Forwarded-Proto", default="")
+        if original_protocol:
+            url = f"{original_protocol}://{request.headers['host']}{request.url.path}"  # construct the URL using the original protocol
+        return url
