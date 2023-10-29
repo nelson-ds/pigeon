@@ -80,7 +80,7 @@ Trip planning service which leverages AI recommendations as well as human travel
 - FIXME: experiment with [langchain](https://twilio.com/blog/3-ways-query-data-langchain-agents-python) LLMs
 - TODO: experiment with [gpt](youtube.com/watch?v=kCc8FmEb1nY) & tabs
 - TODO: experiment with [local llama](github.com/ggerganov/llama.cpp)
-- TODO: experiment with [streamlit](streamlit.io/) and create dev sandbox to interact with ai model via streamlit
+- TODO: experiment with [streamlit](https://github.com/craigsdennis/llm-trip-saver) & use it to interact with ai models in a sandbox
 - TODO: create feature for basic user on-boarding
 - TODO: create feature for user to user communication
 - TODO: create feature for landing page with [basic usage guide, git project in about, feedback, faqs]
