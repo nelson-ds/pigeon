@@ -77,9 +77,7 @@ Trip planning service which leverages AI recommendations as well as human travel
       ```
 
 ### Work in progress
-- FIXME: verify quick access to landing page
-- FIXME: add functionality (security) for ssh mac whitelist for stage & rpi
-- TODO: experiment with [langchain](twilio.com/blog/3-ways-query-data-langchain-agents-python) LLMs
+- FIXME: experiment with [langchain](https://twilio.com/blog/3-ways-query-data-langchain-agents-python) LLMs
 - TODO: experiment with [gpt](youtube.com/watch?v=kCc8FmEb1nY) & tabs
 - TODO: experiment with [local llama](github.com/ggerganov/llama.cpp)
 - TODO: experiment with [streamlit](streamlit.io/) and create dev sandbox to interact with ai model via streamlit
@@ -93,4 +91,3 @@ Trip planning service which leverages AI recommendations as well as human travel
 - TODO: add functionality (security) to sanitize input to avoid injection attacks
 - TODO: add functionality (security) to encrypt mongodb data at rest
 - TODO: peruse and document [auth, logging, middleware, jinja]
-- TODO: peruse drive use-cases
