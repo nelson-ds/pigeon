@@ -90,4 +90,4 @@ Trip planning service which leverages AI recommendations as well as human travel
 - TODO: add functionality (security) to configure rate limiting for webhook at application level
 - TODO: add functionality (security) to sanitize input to avoid injection attacks
 - TODO: add functionality (security) to encrypt mongodb data at rest
-- TODO: peruse and document [auth, logging, middleware, jinja]
+- TODO: peruse and document [auth, logging, middleware, jinja, ai web pages]
