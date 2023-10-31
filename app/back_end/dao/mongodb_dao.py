@@ -1,7 +1,7 @@
-from data_models.dto.users_dto import UsersDto
+from back_end.dto.users_dto import UsersDto
+from back_end.utils.exceptions import MongoDbUserNotFoundException
+from back_end.utils.settings_accumalator import Settings
 from pymongo import MongoClient
-from utils.exceptions import MongoDbUserNotFoundException
-from utils.settings_accumalator import Settings
 
 
 class MongodbDao:

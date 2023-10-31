@@ -1,5 +1,7 @@
-from communication.incoming_sms import IncomingSms
-from data_models.dao.mongodb_dao import MongodbDao
+from back_end.dao.mongodb_dao import MongodbDao
+from back_end.twilio.incoming_sms import IncomingSms
+from back_end.utils.generic import logger
+from back_end.utils.settings_accumalator import Settings
 from fastapi import (APIRouter, Depends, HTTPException, Request, Security,
                      responses, status)
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
@@ -7,8 +9,6 @@ from fastapi.templating import Jinja2Templates
 from starlette.datastructures import FormData
 from twilio.request_validator import RequestValidator
 from twilio.rest import Client as TwilioClient
-from utils.generic import logger
-from utils.settings_accumalator import Settings
 
 
 class Routes():

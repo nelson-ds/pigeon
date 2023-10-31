@@ -1,5 +1,5 @@
+from back_end.utils.generic import custom_logger
 from launcher import launcher
-from utils.generic import custom_logger
 from uvicorn import run
 
 if __name__ == '__main__':

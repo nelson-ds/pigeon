@@ -1,7 +1,7 @@
-from data_models.dao.mongodb_dao import MongodbDao
-from data_models.dto.users_dto import UsersDto
-from utils.exceptions import MongoDbUserNotFoundException
-from utils.generic import logger
+from back_end.dao.mongodb_dao import MongodbDao
+from back_end.dto.users_dto import UsersDto
+from back_end.utils.exceptions import MongoDbUserNotFoundException
+from back_end.utils.generic import logger
 
 
 class IncomingSms:

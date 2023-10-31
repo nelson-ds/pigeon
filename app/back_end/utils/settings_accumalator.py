@@ -1,7 +1,7 @@
 from os import environ
 
+from back_end.utils.generic import create_json, file_to_dict, logger, read_json
 from dotenv import load_dotenv
-from utils.generic import create_json, file_to_dict, logger, read_json
 
 env_configs_file = '/pigeon/.env'
 app_configs_file = '/pigeon/app/configs/configs.json'

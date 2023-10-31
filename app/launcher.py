@@ -1,11 +1,11 @@
-from data_models.dao.mongodb_dao import MongodbDao
+from back_end.dao.mongodb_dao import MongodbDao
+from back_end.middleware import RouterLoggingMiddleware
+from back_end.routes import Routes
+from back_end.utils.generic import custom_logger, logger
+from back_end.utils.settings_accumalator import SettingsAccumalator
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from twilio.rest import Client
-from utils.generic import custom_logger, logger
-from utils.settings_accumalator import SettingsAccumalator
-from web_server.middleware import RouterLoggingMiddleware
-from web_server.routes import Routes
 
 
 class Launcher:

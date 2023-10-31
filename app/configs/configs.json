@@ -4,8 +4,8 @@
         "web_route_home": "/",
         "web_route_sms": "/sms",
         "web_route_static": "/static",
-        "web_static_dir": "/pigeon/app/web_server/static/",
-        "web_templates_dir": "/pigeon/app/web_server/templates/",
+        "web_static_dir": "/pigeon/app/front_end/static/",
+        "web_templates_dir": "/pigeon/app/front_end/templates/",
         "web_template_home_file_name": "index.html"
     },
     "dev": {
