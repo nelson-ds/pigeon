@@ -7,14 +7,14 @@ Trip planning service which leverages AI recommendations as well as human travel
     - You will be made aware of service restrictions and rate limiting (if any)
     - All interactions with this service will be via text message
     - At any point, if you want to communicate with the service, start your message with the word `pigeon`
-- Using AI for trip planning
-    - Ask questions realted to planning a visit to a city and recive AI recommendations
+- Leveraging AI for trip planning
+    - Ask basic questions realted to planning a visit to a city and recive AI recommendations
     - Converse with the AI as you would with any other human
     - There will be limits on the interaction with the AI - these are determined by your past usage of the service
-- Asking/Answering other users' travel questions
-    - Utilizing help - for more specific questions that AI cannot answer, get connected up with another user (anonymously) who has visited the same place
+- Leveraging human help for trip planning
+    - Requesting help - for more specific questions that AI cannot answer, get connected up with another user (anonymously) who has visited the same place
     - Providing help - answer questsions other users might have (after being connected anonymously) about visiting the places you have been to
-    - Every connection will be valid for a limited amount of time and have text count/size limits - these are determined by your past interactions
+    - Every connection to another human will be valid for a limited amount of time and have text count/size limits - these are determined by your past interactions with the service
     - A user can only be connected with one other user at any given time -  there are limits on the total number of connections per week
     - A users can chose to end their connection with another user at any time
     - Once a connection has ended, both users will be asked to rate their conversation and this will help determine quality of future connections
@@ -52,6 +52,12 @@ Trip planning service which leverages AI recommendations as well as human travel
   ```
   docker exec -it mongodb bash
   eval $MONGOSH
+    Example DB commands:
+        use pigeon
+        show collections
+        db.users.insertOne({name: "John Doe", phone_number: '+19999999999'})
+        db.users.find()
+        db.users.deleteOne({name: "John Doe", phone_number: '+19999999999'})
   ```
 
 - Twilio
@@ -68,22 +74,22 @@ Trip planning service which leverages AI recommendations as well as human travel
       ```
     - Obtain twilio signature by following documentation in `routes.py/validate_twilio_signature`
     - Send a curl request using token and twilio signature; example -
-      ```
+    ```
       curl -i -X POST \
       -H "Authorization: Basic dGVzdDp0ZXN0" \
       -H "X-Twilio-Signature: 5rVrhMTIJCCg0FOvzCbH809pehE=" \
       -d "To=%2B1234567890" -d "From=%2B0987654321" -d "Body=Hello, pigeon" \
       https://localhost/sms
-      ```
+    ```
 
 ### Work in progress
-- FIXME: experiment with [langchain](https://twilio.com/blog/3-ways-query-data-langchain-agents-python) LLMs
-- TODO: experiment with [gpt](youtube.com/watch?v=kCc8FmEb1nY) & tabs
-- TODO: experiment with [local llama](github.com/ggerganov/llama.cpp)
-- TODO: experiment with [streamlit](https://github.com/craigsdennis/llm-trip-saver) & use it to interact with ai models in a sandbox
 - TODO: create feature for basic user on-boarding
 - TODO: create feature for user to user communication
 - TODO: create feature for landing page with [basic usage guide, git project in about, feedback, faqs]
+- TODO: experiment with [langchain](https://twilio.com/blog/3-ways-query-data-langchain-agents-python) LLMs
+- TODO: experiment with [gpt](youtube.com/watch?v=kCc8FmEb1nY) & tabs
+- TODO: experiment with [local llama](github.com/ggerganov/llama.cpp)
+- TODO: experiment with [streamlit](https://github.com/craigsdennis/llm-trip-saver) & use it to interact with ai models in a sandbox
 - TODO: create feature for user to AI communication using langchain
 - TODO: create feature for user to AI communication by building LLM from scratch
 - TODO: add functionality (testing) for unit tests
