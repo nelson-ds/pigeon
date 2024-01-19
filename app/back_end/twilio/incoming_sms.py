@@ -2,6 +2,7 @@ from back_end.dao.mongodb_dao import MongodbDao
 from back_end.dto.users_dto import UsersDto
 from back_end.utils.exceptions import MongoDbUserNotFoundException
 from back_end.utils.generic import logger
+from twilio.twiml.messaging_response import MessagingResponse
 
 
 class IncomingSms:
@@ -13,19 +14,15 @@ class IncomingSms:
         self.user: UsersDto = self._get_user_from_db()
 
     def get_response(self) -> str:
-        twiml_success_response = """
-                    <Response>
-                        <Message>Recieved Your SMS</Message>
-                    </Response>
-                """
-        twiml_empty_response = '<Response/>'
+        response = MessagingResponse()
 
         if not self.is_user_onboarded:
-            response = self._new_user_onboarding()
+            new_user_onboarding_response = self._get_new_user_onboarding_response()
+            response.message(new_user_onboarding_response)
         else:
-            response = twiml_success_response
+            response.message('Recieved your sms')
 
-        return response
+        return str(response)
 
     def _get_user_from_db(self) -> UsersDto:
         user = None
@@ -53,13 +50,11 @@ class IncomingSms:
         finally:
             return user_dto
 
-    def _new_user_onboarding(self):
+    def _get_new_user_onboarding_response(self):
         logger.info(f'Triggering onboarding for new user..')
-        twiml_new_user_name_request = """
-                    <Response>
-                        <Message>Hello, welcome to PigeonMsg! I'm your assitant Pidge and I'll help you plan your next trip in California.</Message>
-                        <Message>Before we get started, what should I call you? If you don't feel comfortable sharing your real name, use a made up one like 'Wanderer' :-)</Message>
-                        <Message>If you want to change what I call you in the future, just text 'pidge new-name <new name here></Message>
-                    </Response>
-                """
+        twiml_new_user_name_request = \
+            "Hello, welcome to PigeonMsg! I'm your assitant Pidge and I'll help you plan your next trip in California." + \
+            "Before we get started, what should I call you? If you don't feel comfortable sharing your real name, use a made up one like 'Wanderer' :-)" + \
+            "If you want to change what I call you in the future, just text 'pidge new-name <new name here>"
+
         return twiml_new_user_name_request
