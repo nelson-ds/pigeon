@@ -53,8 +53,7 @@ class IncomingSms:
     def _get_new_user_onboarding_response(self):
         logger.info(f'Triggering onboarding for new user..')
         twiml_new_user_name_request = \
-            "Hello, welcome to PigeonMsg! I'm your assitant Pidge and I'll help you plan your next trip in California." + \
-            "Before we get started, what should I call you? If you don't feel comfortable sharing your real name, use a made up one like 'Wanderer' :-)" + \
+            "Hello, welcome to PigeonMsg! I'm your assitant Pidge and I'll help you plan your next trip in California!\n\n" + \
+            "Before we get started, what should I call you? If you don't feel comfortable sharing your real name, use a made up one like 'Wanderer' 😊 \n\n" + \
             "If you want to change what I call you in the future, just text 'pidge new-name <new name here>"
-
         return twiml_new_user_name_request
