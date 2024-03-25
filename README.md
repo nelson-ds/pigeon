@@ -32,6 +32,8 @@ Trip planning service which leverages AI recommendations as well as human travel
     - In the option for 'A message comes in', add the url for this app
     - URL format: `https://APP_USERNAME_CONFIGURED_IN_SECRETS:APP_PASSWORD_CONFIGURED_IN_SECRETS@YOUR_DOMAIN_URL/sms` (example https://test:test@pigeonmsg.com/sms)
     - If you do not have a domain URL, you can also configure the IP address (exposed to the internet) of the remote server that the app is running on
+6. Langchain configurations:
+    - Place your custom knowledge documents (if any) in `/pigeon/app/back_end/langchain/retrieval_docs/` - these will be used to provide additional context for the AI chatbot
 
 ### Optional Dependencies
 1. [Nginx](https://nginx.org/en/download.html): install this if you want to implement reverse proxy to serve app's web page
