@@ -1,27 +1,36 @@
 from back_end.dao.mongodb_dao import MongodbDao
+from back_end.dao.mongodb_langchain_dao import MongodbLangchainDao
 from back_end.dto.users_dto import UsersDto
+from back_end.langchain.llm_client import LangchainClient
 from back_end.utils.exceptions import MongoDbUserNotFoundException
 from back_end.utils.generic import logger
+from back_end.utils.settings_accumalator import Settings
 from twilio.twiml.messaging_response import MessagingResponse
 
 
 class IncomingSms:
-    def __init__(self, sms_from: str, sms_body: str, mongodb_dao: MongodbDao):
+    def __init__(self, settings: Settings, mongodb_dao: MongodbDao, langchain_client: LangchainClient, sms_from: str, sms_body: str):
         self.sms_from = sms_from
         self.sms_body = sms_body
         self.is_user_onboarded = True
         self.mongodb_dao: MongodbDao = mongodb_dao
         self.user: UsersDto = self._get_user_from_db()
+        self.mongodb_langchain_dao: MongodbLangchainDao = MongodbLangchainDao(settings, sms_from)
+        self.langchain_client = langchain_client
 
     def get_response(self) -> str:
+        answer = None
         response = MessagingResponse()
-
         if not self.is_user_onboarded:
-            new_user_onboarding_response = self._get_new_user_onboarding_response()
-            response.message(new_user_onboarding_response)
+            answer = self._get_new_user_onboarding_response()
+            response.message(answer)
         else:
-            response.message('Recieved your sms')
-
+            chat_history = self.mongodb_langchain_dao.chat_history
+            llm_response = self.langchain_client.get_chat_response(chat_history, self.sms_from, self.sms_body)
+            answer = llm_response
+            response.message(answer)
+        logger.info(f'query: {self.sms_body}; langchain_answer: {answer}')
+        self.mongodb_langchain_dao.update_chat_history(self.sms_body, answer)
         return str(response)
 
     def _get_user_from_db(self) -> UsersDto:

@@ -6,8 +6,9 @@ from dotenv import load_dotenv
 env_configs_file = '/pigeon/.env'
 app_configs_file = '/pigeon/app/configs/configs.json'
 app_secrets_file = '/pigeon/secrets/app.json'
-twilio_secrets_file = '/pigeon/secrets/twilio/.twilio-cli/config.json'
 db_secrets_file = '/pigeon/secrets/mongodb/mongodb_credentials.txt'
+twilio_secrets_file = '/pigeon/secrets/twilio/.twilio-cli/config.json'
+openai_secrets_file = '/pigeon/secrets/openai/openai_credentials.txt'
 combined_configs_file = '/pigeon/secrets/tmp_runtime_configs.json'
 
 
@@ -37,7 +38,8 @@ class SettingsAccumalator:
         app_secrets = {'secrets_app': read_json(app_secrets_file)}
         mongodb_secrets = {'secrets_mongodb': file_to_dict(db_secrets_file, '=')}
         twilio_secrets = {'secrets_twilio': read_json(twilio_secrets_file)}
-        combined_configs = {**env, **configs, **app_secrets, **mongodb_secrets, **twilio_secrets}
+        openai_secrets = {'secrets_openai': file_to_dict(openai_secrets_file, '=')}
+        combined_configs = {**env, **configs, **app_secrets, **mongodb_secrets, **twilio_secrets, **openai_secrets}
         create_json(combined_configs_file, combined_configs)
         logger.info(f'All Configs: {combined_configs}')
         return combined_configs
@@ -50,6 +52,7 @@ class Settings:
         self.secrets_app = self.SecretsApp(combined_configs['secrets_app'])
         self.secrets_mongodb = self.SecretsMongodb(combined_configs['secrets_mongodb'])
         self.secrets_twilio = self.SecretsTwilio(combined_configs['secrets_twilio'])
+        self.secrets_openai = self.SecretsOpenai(combined_configs['secrets_openai'])
 
     class ConfigsApp:
         def __init__(self, app_configs: dict):
@@ -57,12 +60,18 @@ class Settings:
             self.logging_format_minimized = bool(app_configs['logging_format_minimized'])
             self.logging_level = app_configs['logging_level']
             self.mongodb_collection_users = app_configs['mongodb_collection_users']
+            self.mongodb_collection_chats = app_configs['mongodb_collection_chats']
             self.web_route_home = app_configs['web_route_home']
             self.web_route_sms = app_configs['web_route_sms']
             self.web_route_static = app_configs['web_route_static']
             self.web_static_dir = app_configs['web_static_dir']
             self.web_templates_dir = app_configs['web_templates_dir']
             self.web_template_home_file_name = app_configs['web_template_home_file_name']
+            self.langchain_retrieval_docs_dir = app_configs['langchain_retrieval_docs_dir']
+            self.langchain_retrieval_docs_dir = app_configs['langchain_retrieval_docs_dir']
+            self.openai_model = app_configs['openai_model']
+            self.openai_temperature = app_configs['openai_temperature']
+            self.chat_prompt = app_configs['chat_prompt']
 
     class SecretsApp:
         def __init__(self, app_secrets: dict):
@@ -79,3 +88,7 @@ class Settings:
             self.sending_number = twilio_secrets['twilio_sending_number']
             self.account_sid = twilio_secrets['profiles']['pigeon']['accountSid']
             self.auth_token = twilio_secrets['profiles']['pigeon']['authToken']
+
+    class SecretsOpenai:
+        def __init__(self, openai_secrets: dict):
+            self.api_key = openai_secrets['OPENAI_API_KEY']

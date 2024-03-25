@@ -1,4 +1,5 @@
 from back_end.dao.mongodb_dao import MongodbDao
+from back_end.langchain.llm_client import LangchainClient
 from back_end.twilio.incoming_sms import IncomingSms
 from back_end.utils.generic import logger
 from back_end.utils.settings_accumalator import Settings
@@ -12,10 +13,8 @@ from twilio.rest import Client as TwilioClient
 
 
 class Routes():
-    def __init__(self, settings: Settings, twilio_client: TwilioClient, mongodb_dao: MongodbDao):
+    def __init__(self, settings: Settings, mongodb_dao: MongodbDao, twilio_client: TwilioClient, langchain_client: LangchainClient):
         self.settings = settings
-        self.twilio_client = twilio_client
-        self.mongodb_dao = mongodb_dao
         self.router = APIRouter()
         self.templates = Jinja2Templates(directory=self.settings.configs_app.web_templates_dir)
 
@@ -29,7 +28,7 @@ class Routes():
             self.validate_twilio_signature(request, form)
             sms_from, sms_body = form.get('From'), form.get('Body')
             logger.info(f'Recieved sms from {sms_from} with body: {sms_body}')
-            incoming_sms = IncomingSms(sms_from, sms_body, mongodb_dao)
+            incoming_sms = IncomingSms(settings, mongodb_dao, langchain_client, sms_from, sms_body)
             response = incoming_sms.get_response()
             return responses.PlainTextResponse(content=response, media_type="text/xml")
 
@@ -54,16 +53,17 @@ class Routes():
         Validation:
             logger.debug(f'signature expected: {validator.compute_signature(request_url, sorted_params)}')
         """
-        validator = RequestValidator(self.settings.secrets_twilio.auth_token)
-        request_url = self.get_url(request)
-        sorted_params = dict(sorted(form.items(), key=lambda x: x[0]))
-        twilio_signature_recieved = request.headers.get('X-Twilio-Signature')
-        is_signature_valid = validator.validate(request_url, sorted_params, twilio_signature_recieved)
-        if not is_signature_valid:
-            logger.info(f'Could not validate signature for incoming request: {form}')
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Twilio signature")
-        else:
-            logger.debug(f'Signature validated for incoming request: {form}')
+        if self.settings.configs_env.environment != 'dev':
+            validator = RequestValidator(self.settings.secrets_twilio.auth_token)
+            request_url = self.get_url(request)
+            sorted_params = dict(sorted(form.items(), key=lambda x: x[0]))
+            twilio_signature_recieved = request.headers.get('X-Twilio-Signature')
+            is_signature_valid = validator.validate(request_url, sorted_params, twilio_signature_recieved)
+            if not is_signature_valid:
+                logger.info(f'Could not validate signature for incoming request: {form}')
+                raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Twilio signature")
+            else:
+                logger.debug(f'Signature validated for incoming request: {form}')
 
     def get_url(self, request: Request):
         """

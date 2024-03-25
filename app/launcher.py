@@ -1,11 +1,12 @@
 from back_end.dao.mongodb_dao import MongodbDao
+from back_end.langchain.llm_client import LangchainClient
 from back_end.middleware import RouterLoggingMiddleware
 from back_end.routes import Routes
 from back_end.utils.generic import custom_logger, logger
 from back_end.utils.settings_accumalator import SettingsAccumalator
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from twilio.rest import Client
+from twilio.rest import Client as TwilioClient
 
 
 class Launcher:
@@ -21,11 +22,14 @@ class Launcher:
         custom_logger.change_formatter(minimized=self.settings.configs_app.logging_format_minimized)
         custom_logger.change_logging_level(root_logging_level=self.settings.configs_app.logging_level)
 
-        logger.info('Creating Twilio client..')
-        self.twilio_client = Client(self.settings.secrets_twilio.account_sid, self.settings.secrets_twilio.auth_token)
-
         logger.info('Creating user DAO..')
         self.mongodb_dao = MongodbDao(self.settings)
+
+        logger.info('Creating Twilio client..')
+        self.twilio_client = TwilioClient(self.settings.secrets_twilio.account_sid, self.settings.secrets_twilio.auth_token)
+
+        logger.info('Creating LangChain client..')
+        self.langchain_client = LangchainClient(self.settings)
 
     def configure_app(self, app: FastAPI):
         logger.info('Configuring FastAPI app..')
@@ -33,7 +37,7 @@ class Launcher:
             RouterLoggingMiddleware,
             logger=logger
         )
-        routes = Routes(self.settings, self.twilio_client, self.mongodb_dao)
+        routes = Routes(self.settings, self.mongodb_dao, self.twilio_client, self.langchain_client)
         app.include_router(routes.router)
         app.mount(
             path=self.settings.configs_app.web_route_static,

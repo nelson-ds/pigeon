@@ -9,6 +9,9 @@ certificates
 mongodb/data
 redis_data
 
+# AI augmentation data
+app/back_end/langchain/retrieval_docs
+
 # Byte-compiled / optimized / DLL files
 *.pyc
 
