@@ -78,7 +78,7 @@ class IncomingSms:
             "You can either ask your travel related questions to me (your helpful AI bird) or you can ask me to connect you to another " + \
             "human (more on that later).\n\n" + \
             "First, lets get familiar! " +  \
-            "What should I call you? If you don't feel comfortable sharing your real name, reply with a made up one like 'Wanderer' 😊 \n\n"
+            "What should I call you? If you don't feel comfortable sharing your real name, reply with a made up one like \"Wanderer\" 😊 \n\n"
         return onboarding_response
 
     def _get_user_name_response(self, chat_history):
@@ -89,11 +89,11 @@ class IncomingSms:
         user_name_response = \
             f"Hi {user_name}, nice to meet you! There are a couple long messages I'll send you as part of on-boarding to the platform - " +\
             "please bear with me.\n\nThis platform is sustained by folks who are willing to help others users (anonymously) " +\
-            "by answering their questions about trip planning." + \
+            "by answering their questions about trip planning. " + \
             "A chat with another user will automatically expire in 24 hours but you can also " + \
-            "end it any time you wish. If you are willing to assist another user, simply respond with the names of cities in California that" +\
+            "end it any time you wish. If you are willing to assist other users, simply respond with the names of cities in California that" +\
             "you are familiar with (you can always change this later).\n\n" + \
-            "For example, you can reply \"No\" if you don't want to help other users on this platform, or if you are willing to help, " + \
+            "For example, you can reply \"No\" if you don't want to help other users on this platform. If you are willing to help, " + \
             "reply with names of cities you are familiar with, like \"San Francisco, Mendocino...\""
         return user_name_response
 
@@ -111,7 +111,7 @@ class IncomingSms:
         user_cities_response = city_response + \
             "At any point, if you want to chat with a human about planing a trip to a city in California, reply with the command - " +\
             "\"pidge human <city name>\". If I know of another user who is famililar with that city, I'll connect you two " +\
-            "anonymously! To get a list of all commands at any time, reply with \"pidge commands\".\n\n" +\
+            "anonymously! To get a list of all commands, reply with \"pidge commands\".\n\n" +\
             "You can of-course ask me questions anytime! " +\
             "Can I assist you with planning your next trip to any city in California?"
 
