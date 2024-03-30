@@ -86,14 +86,13 @@ Trip planning service which leverages AI recommendations as well as human travel
     ```
 
 ### Work in progress
-- TODO: create feature for basic user on-boarding
 - TODO: create feature for user to user communication
+- TODO: create feature for user data updates via 'pidge' command
 - TODO: create feature for landing page with [basic usage guide, git project in about, feedback, faqs]
-- TODO: experiment with [gpt](youtube.com/watch?v=kCc8FmEb1nY)
-- TODO: experiment with [local llama](github.com/ggerganov/llama.cpp)
-- TODO: experiment with [streamlit](https://github.com/craigsdennis/llm-trip-saver) & use it to interact with ai models in a sandbox
-- TODO: experiment user to AI communication by building LLM from scratch?
-- TODO: experiment with Mongo instead of Chroma for vectorization?
+- TODO: experiment with user to AI communication by building LLM [from scratch](youtube.com/watch?v=kCc8FmEb1nY)
+- TODO: experiment with deploying llm locally using [llama](github.com/ggerganov/llama.cpp)
+- TODO: experiment with interacting with ai models in sandbox via [streamlit](github.com/craigsdennis/llm-trip-saver)
+- TODO: experiment with vectorization replacement from Chroma to [Mongo](mongodb.com/developer/products/atlas/advanced-rag-langchain-mongodb/)
 - TODO: add functionality (testing) for unit tests
 - TODO: add functionality (security) to configure rate limiting for webhook at application level
 - TODO: add functionality (security) to sanitize input to avoid injection attacks

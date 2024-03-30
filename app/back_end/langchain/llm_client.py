@@ -3,7 +3,6 @@ from typing import Dict
 
 from back_end.utils.generic import logger
 from back_end.utils.settings_accumalator import Settings
-from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_community.vectorstores import Chroma
 from langchain_core.messages.ai import AIMessage
@@ -24,8 +23,9 @@ class LangchainClient:
         self.settings = settings
         self.chat = self._init_llm_chat()
         self.retriever = self._init_retriever()
-        self.doc_retriever_prompt = self._create_doc_retriever_prompt()
-        self.user_qa_prompt = self._create_user_qa_prompt()
+        self.prompt_get_updated_user_question = self._create_prompt_get_updated_user_question()
+        self.prompt_answer_user_question = self._create_prompt_answer_user_question()
+        self.prompt_admin = self._create_prompt_admin()
 
     def _init_llm_chat(self):
         logger.info('Initializing OpenAI chat..')
@@ -48,56 +48,87 @@ class LangchainClient:
         retriever = vectorstore.as_retriever(k=4)  # k is the number of chunks to retrieve
         return retriever
 
-    def _create_doc_retriever_prompt(self):
-        logger.info('Creating doc retriever prompt..')
+    def _create_prompt_get_updated_user_question(self):
+        logger.info('Creating prompt to update user question based on chat history..')
         standalone_system_prompt = """
         Given a chat history and a follow-up question, rephrase the follow-up question to be a standalone question. \
         Do NOT answer the question, just reformulate it if needed, otherwise return it as is. \
         Only return the final standalone question. \
         """
-        doc_retriever_prompt = ChatPromptTemplate.from_messages(
+        return ChatPromptTemplate.from_messages(
             [
                 ("system", standalone_system_prompt),
                 MessagesPlaceholder(variable_name="history"),
                 ("human", "{question}"),
             ]
         )
-        return doc_retriever_prompt
 
-    def _create_user_qa_prompt(self):
-        logger.info('Creating user QA prompt..')
-        user_qa_prompt = ChatPromptTemplate.from_messages(
+    def _create_prompt_answer_user_question(self):
+        logger.info('Creating prompt to answer user question based on chat history & context..')
+        return ChatPromptTemplate.from_messages(
             [
-                ("system", self.settings.configs_app.chat_prompt +
+                ("system",
+                 "You are a text message bot called pidge. You will help you plan their next trip to any city in California." +
+                 "Always be concise in your answers. Always reply in 50 words or less. Only answer questions related to travel and nothing else." +
                  "You will first try to answer the user's questions based on the below context:\n\n{context}"),
                 MessagesPlaceholder(variable_name="history"),
                 ("human", "{question}"),
             ]
         )
-        return user_qa_prompt
+
+    def _create_prompt_admin(self):
+        logger.info('Creating admin prompt to fetch the name of the user')
+        return ChatPromptTemplate.from_messages(
+            [
+                ("system", "Answer the question based on the chat history."),
+                MessagesPlaceholder(variable_name="history"),
+                ("human", "{question}"),
+            ]
+        )
 
     def _parse_retriever_input(self, params: Dict):
         return params["question"]
 
-    def get_chat_response(self, chat_history: MongoDBChatMessageHistory, phone_number: str, query: str) -> AIMessage:
+    """
+    This method tries to answer the user question via following steps:
+        1. passes user question, chat history & prompt to chat agent which will generate an updated user question
+        2. passes updated user question to a vector store containing ALL docs to fetch only relevant (similar) docs (forming context for question)
+        3. passes context (retrieved doc chunks), user question, chat history & prompt to chat agent which will generate answer
+    """
 
-        doc_question_chain = self.doc_retriever_prompt | self.chat | StrOutputParser()
+    def get_user_chat_response(self, chat_history: MongoDBChatMessageHistory, phone_number: str, query: str) -> AIMessage:
 
-        retriever_chain = RunnablePassthrough.assign(context=doc_question_chain | self.retriever |
-                                                     (lambda docs: "\n\n".join([d.page_content for d in docs])))
+        # binds the doc retrieval prompt for retrieving relevant docs to a chat agent
+        chain_updated_user_question = self.prompt_get_updated_user_question | self.chat | StrOutputParser()
 
-        rag_chain = (retriever_chain | self.user_qa_prompt | self.chat | StrOutputParser())
+        # generates context by passing doc retrieval prompt & all docs to chat agent to fetch only relevant docs (based on question & chat history)
+        chain_doc_retriever = RunnablePassthrough.assign(context=chain_updated_user_question | self.retriever |
+                                                         (lambda docs: "\n\n".join([d.page_content for d in docs])))
 
-        # chain = self.user_qa_prompt | self.chat
-        retrieval_chain_with_history = RunnableWithMessageHistory(
-            rag_chain,
+        # binds the retrieved relevant docs (context) & the user q&a prompt to a chat agent
+        chain_rag = (chain_doc_retriever | self.prompt_answer_user_question | self.chat | StrOutputParser())
+
+        chain_rag_with_history = RunnableWithMessageHistory(
+            chain_rag,
             lambda session_id: chat_history,
             input_messages_key="question",
             history_messages_key="history",
         )
 
         config = {"configurable": {"session_id": phone_number}}
-        # response = retrieval_chain_with_history.invoke(
-        #     {"question": query, "context": self._parse_retriever_input | self.retriever}, config=config)
-        response = retrieval_chain_with_history.invoke({"question": query}, config=config)
+        response = chain_rag_with_history.invoke({"question": query}, config=config)
+        logger.info(f'query: {query}; langchain_answer: {response}')
+        return response
+
+    def get_admin_chat_response(self, chat_history: MongoDBChatMessageHistory, phone_number: str, query: str):
+        chain_admin_chat = self.prompt_admin | self.chat | StrOutputParser()
+        chain_chat_with_history = RunnableWithMessageHistory(
+            chain_admin_chat,
+            lambda session_id: chat_history,
+            input_messages_key="question",
+            history_messages_key="history"
+        )
+        config = {"configurable": {"session_id": phone_number}}
+        response = chain_chat_with_history.invoke({"question": query}, config=config)
+        logger.info(f'query: {query}; langchain_answer: {response}')
         return response

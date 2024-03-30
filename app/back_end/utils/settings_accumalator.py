@@ -71,7 +71,6 @@ class Settings:
             self.langchain_retrieval_docs_dir = app_configs['langchain_retrieval_docs_dir']
             self.openai_model = app_configs['openai_model']
             self.openai_temperature = app_configs['openai_temperature']
-            self.chat_prompt = app_configs['chat_prompt']
 
     class SecretsApp:
         def __init__(self, app_secrets: dict):

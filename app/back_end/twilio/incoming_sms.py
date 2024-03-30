@@ -1,3 +1,5 @@
+from typing import List
+
 from back_end.dao.mongodb_dao import MongodbDao
 from back_end.dao.mongodb_langchain_dao import MongodbLangchainDao
 from back_end.dto.user_dto import UserDto
@@ -16,29 +18,31 @@ class IncomingSms:
         self.is_user_onboarded = True
         self.mongodb_dao: MongodbDao = mongodb_dao
         self.user: UserDto = self._get_user_from_db()
+        self.is_user_name_known = self.user.name is not None
+        self.are_user_cities_known = self.user.cities_ca is not None
         self.mongodb_langchain_dao: MongodbLangchainDao = MongodbLangchainDao(settings, sms_from)
         self.langchain_client = langchain_client
 
     def get_response(self) -> str:
         answer = None
         response = MessagingResponse()
+        chat_history = self.mongodb_langchain_dao.chat_history
         if not self.is_user_onboarded:
             answer = self._get_new_user_onboarding_response()
+            self.mongodb_langchain_dao.update_user_message(self.sms_body)
+            self.mongodb_langchain_dao.update_ai_message(answer)
         else:
-            body_list = self.sms_body.split(' ')
-            if body_list[0] in self.pigeon_invocation:
-                logger.info(f'Admin command invoked by the user')
-                answer = self._get_admin_command_responses()
-            else:
-                chat_history = self.mongodb_langchain_dao.chat_history
-                if len(chat_history.messages) == 2:
-                    logger.info(f'Second message sent by user - assuming first word is the name')  # FIXME: parse this from llm response
-                    self.mongodb_dao.update_user_name(self.user, body_list[0])
-                llm_response = self.langchain_client.get_chat_response(chat_history, self.sms_from, self.sms_body)
-                answer = llm_response
+            llm_response = self.langchain_client.get_user_chat_response(chat_history, self.sms_from, self.sms_body)
+            answer = llm_response
+            if not self.is_user_name_known:
+                answer = self._get_user_name_response(chat_history)
+                self.mongodb_langchain_dao.delete_most_recent_messages(3)  # delete admin interactions from chat history
+                self.mongodb_langchain_dao.update_ai_message(answer)
+            elif not self.are_user_cities_known:
+                answer = self._get_user_cities_response()
+                self.mongodb_langchain_dao.delete_most_recent_messages(3)  # delete admin interactions from chat history
+                self.mongodb_langchain_dao.update_ai_message(answer)
         response.message(answer)
-        logger.info(f'query: {self.sms_body}; langchain_answer: {answer}')
-        self.mongodb_langchain_dao.update_chat_history(self.sms_body, answer)
         return str(response)
 
     def _get_user_from_db(self) -> UserDto:
@@ -69,12 +73,46 @@ class IncomingSms:
 
     def _get_new_user_onboarding_response(self):
         logger.info(f'Triggering onboarding for new user..')
-        twiml_new_user_name_response = \
-            "Hello, welcome to PigeonMsg! I'm your assitant Pidge and I'll help you plan your next trip to a city in California!\n\n" + \
-            "Before we get started, what should I call you? If you don't feel comfortable sharing your real name, use a made up one like 'Wanderer' 😊 \n\n" + \
-            "If you want to change what I call you in the future, just text 'pidge new-name <new name here>"
-        return twiml_new_user_name_response
+        onboarding_response = \
+            "Hello, welcome to PigeonMsg! I'm your assitant Pidge and I'll help you plan your next trip to any city in California!\n\n" + \
+            "You can either direct your travel based questions to me (your helpful AI bird) or you can ask me to connect you to another " + \
+            "human (more on that later)\n\n" + \
+            "First, lets get familiar!" +  \
+            "What should I call you? If you don't feel comfortable sharing your real name, reply with a made up one like 'Wanderer' 😊 \n\n"
+        return onboarding_response
 
-    def _get_admin_command_responses(self):  # FIXME: implement this
-        twiml_admin_command_response = 'Unrecognized admin command sent to Pidge'
-        return twiml_admin_command_response
+    def _get_user_name_response(self, chat_history):
+        logger.info(f'The name of the user is not yet stored - fetching it via langchain..')
+        query = "What is my name? Respond by saying only my name and nothing else. If you don't know my name, say Unknown."
+        user_name = self.langchain_client.get_admin_chat_response(chat_history, self.sms_from, query)
+        self.mongodb_dao.update_user_name(self.user, user_name)
+        user_name_response = \
+            f"Hi {user_name}, nice to make your acquaintance! On this platform, you can recieve help for planning your next California " + \
+            "trip from either me or other users.\n\n This platform is sustained by folks who are willing to help others. " +  \
+            "By 'helping others', I mean chatting with another user (anonymously) and answering their question about planning a trip " + \
+            "to a city you are familiar with. The chat with another user will automatically expire in 24 hours but you can also " + \
+            "end it any time you wish. If you are willing to assist another user with their trip planning to a city you " + \
+            "live in (or know well), simply respond with the names of these cities (you can always make changes later).\n\n" + \
+            "For example, you can reply 'No' if you don't want to help other users on this platform, or if you are willing to help, " + \
+            "you can reply with names of cities you have lived in or are familiar with, like 'San Fransisco, Mendocino...' "
+        return user_name_response
+
+    def _get_user_cities_response(self):
+        chat_history = self.mongodb_langchain_dao.chat_history
+        logger.info(f'The cities for the user are not yet stored - fetching it via langchain..')
+        query = "What are the cities I have indicated I can help other users with? Respond by saying only comma seperated city names " +\
+            "and nothing else. Make sure city names are not acronyms. If I have not given any city names, simply respond with Unknown."
+        user_cities = self.langchain_client.get_admin_chat_response(chat_history, self.sms_from, query)
+        user_cities_list = user_cities.strip().split(',')
+        self.mongodb_dao.update_user_cities(self.user, user_cities_list)
+        city_response = f"Great! I've noted that you're willing to help others with their travel plans to {user_cities}.\n\n"
+        if len(user_cities_list) == 0:
+            city_response = f"No worries, you can always let me know later if you change your mind.\n\n"
+        user_cities_response = city_response + \
+            "At any point, if you want to chat with a human about planing a trip to a city in California, reply with the command - " +\
+            "'pidge human <city name>'. If I know of another user who is famililar with that city, I'll connect you two " +\
+            "anonymously! To get a list of all commands at any time, reply with 'pidge commands'.\n\n" +\
+            "You can of-course ask me questions anytime! " +\
+            "Can I assist you with planning your next trip to any city in California?"
+
+        return user_cities_response

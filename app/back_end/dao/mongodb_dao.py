@@ -1,3 +1,5 @@
+from typing import List
+
 from back_end.dto.user_dto import UserDto
 from back_end.utils.exceptions import MongoDbUserNotFoundException
 from back_end.utils.settings_accumalator import Settings
@@ -30,6 +32,12 @@ class MongodbDao:
 
     def update_user_name(self, user: UserDto, name: str):
         result = self.collection_users.update_one({'phone_number': user.phone_number}, {'$set': {'name': name}})
+        if result.matched_count == 0:
+            raise MongoDbUserNotFoundException('User not found for the provided phone number.')
+        return result.modified_count
+
+    def update_user_cities(self, user: UserDto, cities: List[str]):
+        result = self.collection_users.update_one({'phone_number': user.phone_number}, {'$set': {'cities_ca': cities}})
         if result.matched_count == 0:
             raise MongoDbUserNotFoundException('User not found for the provided phone number.')
         return result.modified_count

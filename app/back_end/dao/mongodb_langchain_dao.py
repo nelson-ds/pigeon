@@ -12,6 +12,13 @@ class MongodbLangchainDao:
             collection_name=settings.configs_app.mongodb_collection_chats,
         )
 
-    def update_chat_history(self, query: str, answer: str):
+    def update_user_message(self, query: str):
         self.chat_history.add_user_message(query)
+
+    def update_ai_message(self, answer: str):
         self.chat_history.add_ai_message(answer)
+
+    def delete_most_recent_messages(self, count: int):
+        prev_messages = self.chat_history.collection.find().sort('_id', -1).limit(count)
+        ids_to_delete = [message['_id'] for message in prev_messages]
+        self.chat_history.collection.delete_many({'_id': {'$in': ids_to_delete}})

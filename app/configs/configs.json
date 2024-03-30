@@ -10,8 +10,7 @@
         "web_template_home_file_name": "index.html",
         "langchain_retrieval_docs_dir": "/pigeon/app/back_end/langchain/retrieval_docs/",
         "openai_model": "gpt-3.5-turbo-1106",
-        "openai_temperature": "0.2",
-        "chat_prompt": "You are a text message bot called pidge. You will help you plan their next trip in California. Always be concise in your answers. Always reply in 50 words or less. Only answer questions related to travel and nothing else."
+        "openai_temperature": "0.2"
     },
     "dev": {
         "uvicorn_reload": true,
