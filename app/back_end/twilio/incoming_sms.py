@@ -75,9 +75,9 @@ class IncomingSms:
         logger.info(f'Triggering onboarding for new user..')
         onboarding_response = \
             "Hello, welcome to PigeonMsg! I'm your assitant Pidge and I'll help you plan your next trip to any city in California!\n\n" + \
-            "You can either direct your travel based questions to me (your helpful AI bird) or you can ask me to connect you to another " + \
-            "human (more on that later)\n\n" + \
-            "First, lets get familiar!" +  \
+            "You can either ask your travel related questions to me (your helpful AI bird) or you can ask me to connect you to another " + \
+            "human (more on that later).\n\n" + \
+            "First, lets get familiar! " +  \
             "What should I call you? If you don't feel comfortable sharing your real name, reply with a made up one like 'Wanderer' 😊 \n\n"
         return onboarding_response
 
@@ -87,14 +87,14 @@ class IncomingSms:
         user_name = self.langchain_client.get_admin_chat_response(chat_history, self.sms_from, query)
         self.mongodb_dao.update_user_name(self.user, user_name)
         user_name_response = \
-            f"Hi {user_name}, nice to make your acquaintance! On this platform, you can recieve help for planning your next California " + \
-            "trip from either me or other users.\n\n This platform is sustained by folks who are willing to help others. " +  \
-            "By 'helping others', I mean chatting with another user (anonymously) and answering their question about planning a trip " + \
-            "to a city you are familiar with. The chat with another user will automatically expire in 24 hours but you can also " + \
-            "end it any time you wish. If you are willing to assist another user with their trip planning to a city you " + \
-            "live in (or know well), simply respond with the names of these cities (you can always make changes later).\n\n" + \
-            "For example, you can reply 'No' if you don't want to help other users on this platform, or if you are willing to help, " + \
-            "you can reply with names of cities you have lived in or are familiar with, like 'San Fransisco, Mendocino...' "
+            f"Hi {user_name}, nice to meet you! There are a couple long messages I'll send you as part of on-boarding to the platform - " +\
+            "please bear with me.\n\nThis platform is sustained by folks who are willing to help others users (anonymously) " +\
+            "by answering their questions about trip planning." + \
+            "A chat with another user will automatically expire in 24 hours but you can also " + \
+            "end it any time you wish. If you are willing to assist another user, simply respond with the names of cities in California that" +\
+            "you are familiar with (you can always change this later).\n\n" + \
+            "For example, you can reply \"No\" if you don't want to help other users on this platform, or if you are willing to help, " + \
+            "reply with names of cities you are familiar with, like \"San Francisco, Mendocino...\""
         return user_name_response
 
     def _get_user_cities_response(self):
@@ -110,8 +110,8 @@ class IncomingSms:
             city_response = f"No worries, you can always let me know later if you change your mind.\n\n"
         user_cities_response = city_response + \
             "At any point, if you want to chat with a human about planing a trip to a city in California, reply with the command - " +\
-            "'pidge human <city name>'. If I know of another user who is famililar with that city, I'll connect you two " +\
-            "anonymously! To get a list of all commands at any time, reply with 'pidge commands'.\n\n" +\
+            "\"pidge human <city name>\". If I know of another user who is famililar with that city, I'll connect you two " +\
+            "anonymously! To get a list of all commands at any time, reply with \"pidge commands\".\n\n" +\
             "You can of-course ask me questions anytime! " +\
             "Can I assist you with planning your next trip to any city in California?"
 
