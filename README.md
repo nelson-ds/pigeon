@@ -60,6 +60,7 @@ Trip planning service which leverages AI recommendations as well as human travel
         db.users.insertOne({name: "John Doe", phone_number: '+19999999999'})
         db.users.find()
         db.users.deleteOne({name: "John Doe", phone_number: '+19999999999'})
+        db.users.deleteMany({})
   ```
 
 - Twilio
@@ -74,7 +75,7 @@ Trip planning service which leverages AI recommendations as well as human travel
       ```
       python -c 'import base64; h = base64.urlsafe_b64encode (b"test:test"); print(h)'
       ```
-    - Obtain twilio signature by following documentation in `routes.py/validate_twilio_signature`
+    - Obtain twilio signature by following documentation in `app/back_end/routes.py/validate_twilio_signature` (not needed for dev testing)
     - Send a curl request using token and twilio signature; example -
     ```
       curl -i -X POST \
@@ -88,16 +89,13 @@ Trip planning service which leverages AI recommendations as well as human travel
 - TODO: create feature for basic user on-boarding
 - TODO: create feature for user to user communication
 - TODO: create feature for landing page with [basic usage guide, git project in about, feedback, faqs]
-- TODO: refactor to get Mongo RAG
-- TODO: refactor with Mongo instead of Chroma for vectorization?
 - TODO: experiment with [gpt](youtube.com/watch?v=kCc8FmEb1nY)
-- TODO: experiment with [agents](https://twilio.com/blog/3-ways-query-data-langchain-agents-python) LLMs
 - TODO: experiment with [local llama](github.com/ggerganov/llama.cpp)
 - TODO: experiment with [streamlit](https://github.com/craigsdennis/llm-trip-saver) & use it to interact with ai models in a sandbox
-- TODO: create feature for user to AI communication using langchain
-- TODO: create feature for user to AI communication by building LLM from scratch
+- TODO: experiment user to AI communication by building LLM from scratch?
+- TODO: experiment with Mongo instead of Chroma for vectorization?
 - TODO: add functionality (testing) for unit tests
 - TODO: add functionality (security) to configure rate limiting for webhook at application level
 - TODO: add functionality (security) to sanitize input to avoid injection attacks
 - TODO: add functionality (security) to encrypt mongodb data at rest
-- TODO: peruse and document [auth, logging, middleware, jinja, ai web pages]
+- TODO: peruse and document [auth, logging, middleware, jinja, ai web pages, langchain]
