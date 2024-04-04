@@ -23,7 +23,7 @@ class Routes():
             return self.templates.TemplateResponse(self.settings.configs_app.web_template_home_file_name, {'request': request})
 
         @self.router.post(self.settings.configs_app.web_route_sms, dependencies=[Depends(self._authorize)])
-        async def receive_sms(request: Request):
+        async def receive_sms(request: Request):  # FIXME: check all dependencies are async or get rid of this
             form = await request.form()
             self.validate_twilio_signature(request, form)
             sms_from, sms_body = form.get('From'), form.get('Body')

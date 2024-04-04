@@ -97,7 +97,7 @@ class IncomingSms:
             "reply with names of cities you are familiar with, like \"San Francisco, Mendocino...\""
         return user_name_response
 
-    def _get_user_cities_response(self):
+    def _get_user_cities_response(self):  # FIXME: explore openai tool for getting structured output
         chat_history = self.mongodb_langchain_dao.chat_history
         logger.info(f'The cities for the user are not yet stored - fetching it via langchain..')
         query = "What are the cities I have indicated I can help other users with? Respond by saying only comma seperated city names " +\

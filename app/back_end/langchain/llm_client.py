@@ -44,6 +44,7 @@ class LangchainClient:
         logger.info(f'Loaded {len(data)} retrieval documents for LangChain')
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
         all_splits = text_splitter.split_documents(data)
+        # FIXME: consider hardcoding embedding model
         vectorstore = Chroma.from_documents(documents=all_splits, embedding=OpenAIEmbeddings(openai_api_key=self.settings.secrets_openai.api_key))
         retriever = vectorstore.as_retriever(k=4)  # k is the number of chunks to retrieve
         return retriever
