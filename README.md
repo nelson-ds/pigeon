@@ -87,7 +87,7 @@ Trip planning service which leverages AI recommendations as well as human travel
 
 ### Work in progress
 - TODO: create feature for user to user communication
-- TODO: create feature for user data updates via 'pidge' command
+- TODO: create feature for user data updates via the 'pidge' command
 - TODO: create feature for landing page with [basic usage guide, git project in about, feedback, faqs]
 - TODO: experiment with user to AI communication by building LLM [from scratch](youtube.com/watch?v=kCc8FmEb1nY)
 - TODO: experiment with deploying llm locally using [llama](github.com/ggerganov/llama.cpp)
