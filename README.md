@@ -36,7 +36,7 @@ Trip planning service which leverages AI recommendations as well as human travel
     - Place your custom knowledge documents (if any) in `/pigeon/app/back_end/langchain/retrieval_docs/` - these will be used to provide additional context for the AI chatbot
 
 ### Optional Dependencies
-1. [Nginx](https://nginx.org/en/download.html): install this if you want to implement reverse proxy to serve app's web page
+1. [Nginx](https://nginx.org/en/download.html): install this if you want to implement reverse proxy to test api locally & serve app's web page
 2. Nginx configurations: should be placed in `/usr/local/etc/nginx/` (refer `pigeon/templates/nginx_template/` for format)
 
 ### Working in development environment
@@ -45,50 +45,51 @@ Trip planning service which leverages AI recommendations as well as human travel
 
 ### Helper commands
 - Access app landing page:
-  ```
-  http://localhost:8001/ (if not configured Nginx reverse proxy)
-  https://localhost (if configured Nginx reverse proxy)
-  ```
+```
+    http://localhost:8001/ (if not configured Nginx reverse proxy)
+    https://localhost (if configured Nginx reverse proxy)
+```
 
 - Access MongoDB cli: 
-  ```
-  docker exec -it mongodb bash
-  eval $MONGOSH
-    Example DB commands:
-        use pigeon
-        show collections
-        db.users.insertOne({name: "John Doe", phone_number: '+19999999999'})
-        db.users.find()
-        db.users.deleteOne({name: "John Doe", phone_number: '+19999999999'})
-        db.users.deleteMany({})
-  ```
+```
+    docker exec -it mongodb bash
+    eval $MONGOSH
+        Example DB commands:
+            use pigeon
+            show collections
+            db.users.insertOne({name: "John Doe", phone_number: '+19999999999'})
+            db.users.find()
+            db.users.deleteOne({name: "John Doe", phone_number: '+19999999999'})
+            db.users.deleteMany({})
+```
 
 - Twilio
-  - Access Twilio cli: 
+    - Access Twilio cli: 
     ```
-    make twilio-cli
-    twilio phone-numbers:list
+        make twilio-cli
+        twilio phone-numbers:list
     ```
 
-  - Simulate Twilio webhook to receive sms:
-    - Obtain digest token for web server credentials:
-      ```
-      python -c 'import base64; h = base64.urlsafe_b64encode (b"test:test"); print(h)'
-      ```
-    - Obtain twilio signature by following documentation in `app/back_end/routes.py/validate_twilio_signature` (not needed for dev testing)
-    - Send a curl request using token and twilio signature; example -
-    ```
-      curl -i -X POST \
-      -H "Authorization: Basic dGVzdDp0ZXN0" \
-      -H "X-Twilio-Signature: 5rVrhMTIJCCg0FOvzCbH809pehE=" \
-      -d "To=%2B1234567890" -d "From=%2B0987654321" -d "Body=Hello, pigeon" \
-      https://localhost/sms
-    ```
+    - Simulate Twilio webhook to receive sms:
+        - Obtain digest token for web server credentials:
+        ```
+            python -c 'import base64; h = base64.urlsafe_b64encode (b"test:test"); print(h)'
+        ```
+        - Obtain twilio signature by following documentation in `app/back_end/routes.py/validate_twilio_signature` (not needed for dev testing)
+        - Send a curl request using token and twilio signature; example -
+        ```
+            curl -i -X POST \
+            -H "Authorization: Basic dGVzdDp0ZXN0" \
+            -H "X-Twilio-Signature: 5rVrhMTIJCCg0FOvzCbH809pehE=" \
+            -d "To=%2B1234567890" -d "From=%2B0987654321" -d "Body=Hello, pigeon" \
+            https://localhost/sms
+        ```
 
 ### Work in progress
 - TODO: create feature for user to user communication
 - TODO: create feature for user data updates via the 'pidge' command
 - TODO: create feature for landing page with [basic usage guide, git project in about, feedback, faqs]
+- TODO: create architecture diagram using mingrammer
 - TODO: experiment with user to AI communication by building LLM [from scratch](youtube.com/watch?v=kCc8FmEb1nY)
 - TODO: experiment with deploying llm locally using [llama](github.com/ggerganov/llama.cpp)
 - TODO: experiment with interacting with ai models in sandbox via [streamlit](github.com/craigsdennis/llm-trip-saver)
