@@ -36,7 +36,7 @@ Trip planning service which leverages AI recommendations as well as human travel
     - Place your custom knowledge documents (if any) in `/pigeon/app/back_end/langchain/retrieval_docs/` - these will be used to provide additional context for the AI chatbot
 
 ### Optional Dependencies
-1. [Nginx](https://nginx.org/en/download.html): install this if you want to implement reverse proxy to test api locally & serve app's web page
+1. [Nginx](https://nginx.org/en/download.html): install this if you want to implement reverse proxy to serve app's web page / api
 2. Nginx configurations: should be placed in `/usr/local/etc/nginx/` (refer `pigeon/templates/nginx_template/` for format)
 
 ### Working in development environment
