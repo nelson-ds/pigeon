@@ -2,7 +2,7 @@ from datetime import UTC, datetime
 
 
 class UserDto:
-    def __init__(self, phone_number, name=None, cities_ca=None, time_last_sms=datetime.now(UTC), sms_counter=0, _id=None):
+    def __init__(self, phone_number, name=None, cities_ca=None, time_last_sms=datetime.now(UTC), sms_counter=1, _id=None):
         self.phone_number = phone_number
         self.name = name
         self.cities_ca = cities_ca

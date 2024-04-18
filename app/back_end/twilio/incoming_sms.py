@@ -12,7 +12,6 @@ from twilio.twiml.messaging_response import MessagingResponse
 
 class IncomingSms:
     def __init__(self, settings: Settings, mongodb_dao: MongodbDao, langchain_client: LangchainClient, sms_from: str, sms_body: str):
-        self.pigeon_invocation = {'pigeon', 'pidge', 'pgn'}
         self.sms_from = sms_from
         self.sms_body = sms_body
         self.is_user_onboarded = True
@@ -25,28 +24,32 @@ class IncomingSms:
         self.langchain_client = langchain_client
 
     def get_response(self) -> str:
-        response = MessagingResponse()
+        message, response = '', MessagingResponse()
         if not self.is_user_rate_limited:
-            answer = None
-            chat_history = self.mongodb_langchain_dao.chat_history
-            if not self.is_user_onboarded:
-                answer = self._get_new_user_onboarding_response()
-                self.mongodb_langchain_dao.update_user_message(self.sms_body)
-                self.mongodb_langchain_dao.update_ai_message(answer)
+            processed_potential_admin_commnad = self._process_admin_commands(response)
+            if not processed_potential_admin_commnad:
+                message = None
+                chat_history = self.mongodb_langchain_dao.chat_history
+                if not self.is_user_onboarded:
+                    message = self._get_new_user_onboarding_response()
+                    self.mongodb_langchain_dao.update_user_message(self.sms_body)
+                    self.mongodb_langchain_dao.update_ai_message(message)
+                else:
+                    llm_response = self.langchain_client.get_user_chat_response(chat_history, self.sms_from, self.sms_body)
+                    message = llm_response
+                    if not self.is_user_name_known:
+                        message = self._get_user_name_response(chat_history)
+                        self.mongodb_langchain_dao.delete_most_recent_messages(3)  # delete admin interactions from chat history
+                        self.mongodb_langchain_dao.update_ai_message(message)
+                    elif not self.are_user_cities_known:
+                        message = self._get_user_cities_response()
+                        self.mongodb_langchain_dao.delete_most_recent_messages(3)  # delete admin interactions from chat history
+                        self.mongodb_langchain_dao.update_ai_message(message)
             else:
-                llm_response = self.langchain_client.get_user_chat_response(chat_history, self.sms_from, self.sms_body)
-                answer = llm_response
-                if not self.is_user_name_known:
-                    answer = self._get_user_name_response(chat_history)
-                    self.mongodb_langchain_dao.delete_most_recent_messages(3)  # delete admin interactions from chat history
-                    self.mongodb_langchain_dao.update_ai_message(answer)
-                elif not self.are_user_cities_known:
-                    answer = self._get_user_cities_response()
-                    self.mongodb_langchain_dao.delete_most_recent_messages(3)  # delete admin interactions from chat history
-                    self.mongodb_langchain_dao.update_ai_message(answer)
-            response.message(answer + self._get_message_trailer())
+                logger.warn(f'Detected admin command from user with phone number {self.sms_from} and processed it')
         else:
             logger.warn(f'User with phone number {self.sms_from} has reached rate limit - not sending reply')
+        response.message(message + self._get_message_trailer())
         return str(response)
 
     def _get_user_from_db(self) -> UserDto:
@@ -66,7 +69,7 @@ class IncomingSms:
         user_dto = UserDto(phone_number=self.sms_from)
         try:
             inserted_id = self.mongodb_dao.insert_user(user_dto)
-            logger.info(f"New user with phone number {self.sms_from} inserted in DB with ID: {inserted_id}")
+            logger.info(f'New user with phone number {self.sms_from} inserted in DB with ID: {inserted_id}')
             self.is_user_onboarded = False
             return user_dto
         except Exception as e:
@@ -75,11 +78,47 @@ class IncomingSms:
         finally:
             return user_dto
 
+    def _process_admin_commands(self, response: MessagingResponse) -> bool:
+        is_admin_command_parsed = False
+        sms_body_list = self.sms_body.split(' ')
+        try:
+            if sms_body_list[0] == 'pidge':
+                is_admin_command_parsed = True
+                logger.info('Admin command invoked')
+                command = sms_body_list[1]
+                if command == 'help':
+                    self._handle_admin_command_help(response)
+                elif command == 'human':
+                    pass
+                elif command == 'ai':
+                    pass
+                else:
+                    logger.warn(f'Invalid admin command')
+                    self._handle_admin_command_help(response, explicit=False)
+        except Exception as e:
+            is_admin_command_parsed = True
+            logger.error(f'Error while parsing admin command')
+            self._handle_admin_command_help(response, explicit=False)
+        finally:
+            return is_admin_command_parsed
+
+    def _handle_admin_command_help(self, response: MessagingResponse, explicit=True):
+        message = ""
+        if not explicit:
+            message += 'I could not understand your command. Here is some help: \n'
+        message += 'You have a limited number of messages per day using which you can chat with pidge! ' + \
+            'If at any time you want to invoke specific actions, you can use the following commands:\n\n' + \
+            'pidge help: gives the list of commands\n\n' + \
+            'pidge human <city>: connects you to another human (if available) to help answer your travel questions for that city - ' + \
+            'this connection expires after 24 hours (example usage "pidge human Sacramento")\n\n' + \
+            'pidge ai: ends your ongoing connection with another human (if applicable) and connects you back to pidge!'
+        response.message(message)
+
     def _get_message_trailer(self) -> str:
-        trailer = ""
+        trailer = ''
         sms_left_today = SMS_ALLOWED_PER_DAY_PER_USER - self.user.sms_counter
-        if sms_left_today < 3:
-            trailer += f"\n\nNOTE: You only have {sms_left_today} sms left for today. This will reset to {SMS_ALLOWED_PER_DAY_PER_USER} sms at 12 am UTC"
+        if sms_left_today < 3 and sms_left_today >= 0:
+            trailer += f'\n\nNOTE: You have {sms_left_today} sms left for today. This will reset to {SMS_ALLOWED_PER_DAY_PER_USER} sms at 12 am UTC'
         return trailer
 
     def _get_new_user_onboarding_response(self):
@@ -122,7 +161,7 @@ class IncomingSms:
         user_cities_response = city_response + \
             "At any point, if you want to chat with a human about planing a trip to a city in California, reply with the command - " +\
             "\"pidge human <city name>\". If I know of another user who is famililar with that city, I'll connect you two " +\
-            "anonymously! To get a list of all commands, reply with \"pidge commands\".\n\n" +\
+            "anonymously! To get a list of all commands, reply with \"pidge help\".\n\n" +\
             "You can of-course ask me questions anytime! " +\
             "Can I assist you with planning your next trip to any city in California?"
 

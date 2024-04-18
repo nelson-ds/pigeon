@@ -33,7 +33,7 @@ class MongodbDao:
         if user.time_last_sms is not None and now.date() > user.time_last_sms.date():
             self._update_sms_counter(user, 0)  # reset counter every new day
         else:
-            if user.sms_counter < SMS_ALLOWED_PER_DAY_PER_USER:
+            if user.sms_counter <= SMS_ALLOWED_PER_DAY_PER_USER:
                 self._update_sms_counter(user, user.sms_counter + 1)
             else:
                 is_rate_limited = True
