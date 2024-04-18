@@ -4,6 +4,7 @@ certificates
 
 # Environment
 .env
+WIP.md
 
 # DB
 mongodb/data

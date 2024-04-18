@@ -3,21 +3,21 @@ Trip planning service which leverages AI recommendations as well as human travel
 
 ## How does this service work?
 - Onboarding to the service
+    - All interactions with this service will be via text message
     - You will be asked to share information about cities you have previoulsy visited or lived in (voluntary)
     - You will be made aware of service restrictions and rate limiting (if any)
-    - All interactions with this service will be via text message
-    - At any point, if you want to communicate with the service, start your message with the word `pigeon`
+    - At any point, if you want to enter admin commands, start your message with the word `pidge`
 - Leveraging AI for trip planning
     - Ask basic questions realted to planning a visit to a city and recive AI recommendations
     - Converse with the AI as you would with any other human
     - There will be limits on the interaction with the AI - these are determined by your past usage of the service
 - Leveraging human help for trip planning
-    - Requesting help - for more specific questions that AI cannot answer, get connected up with another user (anonymously) who has visited the same place
-    - Providing help - answer questsions other users might have (after being connected anonymously) about visiting the places you have been to
-    - Every connection to another human will be valid for a limited amount of time and have text count/size limits - these are determined by your past interactions with the service
-    - A user can only be connected with one other user at any given time -  there are limits on the total number of connections per week
+    - Requesting help: for more specific questions that AI cannot answer, get connected up with another user (anonymously) who has visited the same place
+    - Providing help: answer questsions other users might have (after being connected anonymously) about visiting the places you have been to
+    - Every connection to another human will be valid for a limited amount of time and have text size/count restrictions - these are determined by your past interactions with the service
+    - A user can only be connected with one other user at any given time with limits on the total number of connections per week
     - A users can chose to end their connection with another user at any time
-    - Once a connection has ended, both users will be asked to rate their conversation and this will help determine quality of future connections
+    - Once a connection has ended, both users may be asked to rate their conversation and this will help determine quality of future connections
 
 
 ## Development
@@ -85,17 +85,3 @@ Trip planning service which leverages AI recommendations as well as human travel
             https://localhost/sms
         ```
 
-### Work in progress
-- TODO: create feature for user to user communication
-- TODO: create feature for user data updates via the 'pidge' command
-- TODO: create feature for landing page with [basic usage guide, git project in about, feedback, faqs]
-- TODO: create architecture diagram using mingrammer
-- TODO: experiment with user to AI communication by building LLM [from scratch](youtube.com/watch?v=kCc8FmEb1nY)
-- TODO: experiment with deploying llm locally using [llama](github.com/ggerganov/llama.cpp)
-- TODO: experiment with interacting with ai models in sandbox via [streamlit](github.com/craigsdennis/llm-trip-saver)
-- TODO: experiment with vectorization replacement from Chroma to [Mongo](mongodb.com/developer/products/atlas/advanced-rag-langchain-mongodb/)
-- TODO: add functionality (testing) for unit tests
-- TODO: add functionality (security) to configure rate limiting for webhook at application level
-- TODO: add functionality (security) to sanitize input to avoid injection attacks
-- TODO: add functionality (security) to encrypt mongodb data at rest
-- TODO: peruse and document [auth, logging, middleware, jinja, ai web pages, langchain]

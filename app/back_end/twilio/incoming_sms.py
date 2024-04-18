@@ -1,6 +1,6 @@
 from typing import List
 
-from back_end.dao.mongodb_dao import MongodbDao
+from back_end.dao.mongodb_dao import SMS_ALLOWED_PER_DAY_PER_USER, MongodbDao
 from back_end.dao.mongodb_langchain_dao import MongodbLangchainDao
 from back_end.dto.user_dto import UserDto
 from back_end.langchain.llm_client import LangchainClient
@@ -18,31 +18,35 @@ class IncomingSms:
         self.is_user_onboarded = True
         self.mongodb_dao: MongodbDao = mongodb_dao
         self.user: UserDto = self._get_user_from_db()
+        self.is_user_rate_limited = self.mongodb_dao.is_user_rate_limited(self.user)
         self.is_user_name_known = self.user.name is not None
         self.are_user_cities_known = self.user.cities_ca is not None
         self.mongodb_langchain_dao: MongodbLangchainDao = MongodbLangchainDao(settings, sms_from)
         self.langchain_client = langchain_client
 
     def get_response(self) -> str:
-        answer = None
         response = MessagingResponse()
-        chat_history = self.mongodb_langchain_dao.chat_history
-        if not self.is_user_onboarded:
-            answer = self._get_new_user_onboarding_response()
-            self.mongodb_langchain_dao.update_user_message(self.sms_body)
-            self.mongodb_langchain_dao.update_ai_message(answer)
+        if not self.is_user_rate_limited:
+            answer = None
+            chat_history = self.mongodb_langchain_dao.chat_history
+            if not self.is_user_onboarded:
+                answer = self._get_new_user_onboarding_response()
+                self.mongodb_langchain_dao.update_user_message(self.sms_body)
+                self.mongodb_langchain_dao.update_ai_message(answer)
+            else:
+                llm_response = self.langchain_client.get_user_chat_response(chat_history, self.sms_from, self.sms_body)
+                answer = llm_response
+                if not self.is_user_name_known:
+                    answer = self._get_user_name_response(chat_history)
+                    self.mongodb_langchain_dao.delete_most_recent_messages(3)  # delete admin interactions from chat history
+                    self.mongodb_langchain_dao.update_ai_message(answer)
+                elif not self.are_user_cities_known:
+                    answer = self._get_user_cities_response()
+                    self.mongodb_langchain_dao.delete_most_recent_messages(3)  # delete admin interactions from chat history
+                    self.mongodb_langchain_dao.update_ai_message(answer)
+            response.message(answer + self._get_message_trailer())
         else:
-            llm_response = self.langchain_client.get_user_chat_response(chat_history, self.sms_from, self.sms_body)
-            answer = llm_response
-            if not self.is_user_name_known:
-                answer = self._get_user_name_response(chat_history)
-                self.mongodb_langchain_dao.delete_most_recent_messages(3)  # delete admin interactions from chat history
-                self.mongodb_langchain_dao.update_ai_message(answer)
-            elif not self.are_user_cities_known:
-                answer = self._get_user_cities_response()
-                self.mongodb_langchain_dao.delete_most_recent_messages(3)  # delete admin interactions from chat history
-                self.mongodb_langchain_dao.update_ai_message(answer)
-        response.message(answer)
+            logger.warn(f'User with phone number {self.sms_from} has reached rate limit - not sending reply')
         return str(response)
 
     def _get_user_from_db(self) -> UserDto:
@@ -70,6 +74,13 @@ class IncomingSms:
             user_dto = None
         finally:
             return user_dto
+
+    def _get_message_trailer(self) -> str:
+        trailer = ""
+        sms_left_today = SMS_ALLOWED_PER_DAY_PER_USER - self.user.sms_counter
+        if sms_left_today < 3:
+            trailer += f"\n\nNOTE: You only have {sms_left_today} sms left for today. This will reset to {SMS_ALLOWED_PER_DAY_PER_USER} sms at 12 am UTC"
+        return trailer
 
     def _get_new_user_onboarding_response(self):
         logger.info(f'Triggering onboarding for new user..')
