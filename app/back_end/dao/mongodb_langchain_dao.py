@@ -1,5 +1,7 @@
+from back_end.utils.generic import logger
 from back_end.utils.settings_accumalator import Settings
 from langchain_mongodb.chat_message_histories import MongoDBChatMessageHistory
+from pymongo.errors import PyMongoError
 
 
 class MongodbLangchainDao:
@@ -11,6 +13,16 @@ class MongodbLangchainDao:
             database_name=settings.configs_env.mongodb_database,
             collection_name=settings.configs_app.mongodb_collection_chats,
         )
+
+    def delete_chat_history(self) -> bool:
+        is_deleted = False
+        try:
+            result = self.chat_history.collection.delete_many({'SessionId': self.chat_history.session_id})
+            is_deleted = result.deleted_count > 0
+        except Exception as e:
+            raise Exception(f'Chat history could not be deleted because of error {e}')
+        finally:
+            return is_deleted
 
     def update_user_message(self, query: str):
         self.chat_history.add_user_message(query)

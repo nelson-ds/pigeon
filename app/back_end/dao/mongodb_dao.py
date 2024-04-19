@@ -1,12 +1,14 @@
-from datetime import UTC, datetime
+from datetime import datetime, timedelta
 from typing import List
 
 from back_end.dto.user_dto import UserDto
 from back_end.utils.exceptions import MongoDbUserNotFoundException
+from back_end.utils.generic import logger
 from back_end.utils.settings_accumalator import Settings
 from pymongo import MongoClient
 
 SMS_ALLOWED_PER_DAY_PER_USER = 50
+SMS_ALLOWED_PER_DAY_TOTAL = 1000
 
 
 class MongodbDao:
@@ -27,20 +29,33 @@ class MongodbDao:
         result = self.collection_users.insert_one(userDict)
         return result.inserted_id
 
-    def is_user_rate_limited(self, user: UserDto):
+    def delete_user(self, user: UserDto) -> int:
+        tomorrow = datetime.now() + timedelta(days=1)
+        result = self.collection_users.update_one({'phone_number': user.phone_number}, {'$set': {'deletion_date': tomorrow}})
+        if result.matched_count == 0:
+            raise Exception('User not found or already deleted.')
+        return result.matched_count
+
+    def is_user_rate_limited(self, user: UserDto) -> bool:
+        logger.info(f'Checking if user {user.phone_number} is rate limited')
         is_rate_limited = False
-        now = datetime.now(UTC)
-        if user.time_last_sms is not None and now.date() > user.time_last_sms.date():
-            self._update_sms_counter(user, 0)  # reset counter every new day
+        now = datetime.now()
+        day_after_tomorrow = now + timedelta(days=2)
+        if user.deletion_date < day_after_tomorrow:
+            logger.info(f'User {user.phone_number} recently off-boarded from the system..')
+            is_rate_limited = True
         else:
-            if user.sms_counter <= SMS_ALLOWED_PER_DAY_PER_USER:
-                self._update_sms_counter(user, user.sms_counter + 1)
+            if user.time_last_sms is not None and now.date() > user.time_last_sms.date():
+                self._update_sms_counter(user, 0)  # reset counter every new day
             else:
-                is_rate_limited = True
-        self.update_time_last_sms(user, now)
+                if user.sms_counter <= SMS_ALLOWED_PER_DAY_PER_USER:
+                    self._update_sms_counter(user, user.sms_counter + 1)
+                else:
+                    is_rate_limited = True
+            self.update_time_last_sms(user, now)
         return is_rate_limited
 
-    def _update_sms_counter(self, user: UserDto, sms_counter: int):
+    def _update_sms_counter(self, user: UserDto, sms_counter: int) -> int:
         result = self.collection_users.update_one({'phone_number': user.phone_number}, {'$set': {'sms_counter': sms_counter}})
         if result.matched_count == 0:
             raise MongoDbUserNotFoundException('User not found for the provided phone number.')
@@ -52,19 +67,19 @@ class MongodbDao:
             raise MongoDbUserNotFoundException('User not found for the provided phone number.')
         return UserDto(**user)
 
-    def update_time_last_sms(self, user: UserDto, time_last_sms: datetime):
+    def update_time_last_sms(self, user: UserDto, time_last_sms: datetime) -> int:
         result = self.collection_users.update_one({'phone_number': user.phone_number}, {'$set': {'time_last_sms': time_last_sms}})
         if result.matched_count == 0:
             raise MongoDbUserNotFoundException('User not found for the provided phone number.')
         return result.modified_count
 
-    def update_user_name(self, user: UserDto, name: str):
+    def update_user_name(self, user: UserDto, name: str) -> int:
         result = self.collection_users.update_one({'phone_number': user.phone_number}, {'$set': {'name': name}})
         if result.matched_count == 0:
             raise MongoDbUserNotFoundException('User not found for the provided phone number.')
         return result.modified_count
 
-    def update_user_cities(self, user: UserDto, cities: List[str]):
+    def update_user_cities(self, user: UserDto, cities: List[str]) -> int:
         result = self.collection_users.update_one({'phone_number': user.phone_number}, {'$set': {'cities_ca': cities}})
         if result.matched_count == 0:
             raise MongoDbUserNotFoundException('User not found for the provided phone number.')
