@@ -1,6 +1,6 @@
 from typing import List
 
-from back_end.dao.mongodb_dao import SMS_ALLOWED_PER_DAY_PER_USER, MongodbDao
+from back_end.dao.mongodb_dao import MongodbDao
 from back_end.dao.mongodb_langchain_dao import (MongoDBChatMessageHistory,
                                                 MongodbLangchainDao)
 from back_end.dto.user_dto import UserDto
@@ -10,6 +10,11 @@ from back_end.utils.generic import logger
 from back_end.utils.settings_accumalator import Settings
 from twilio.twiml.messaging_response import MessagingResponse
 
+SERVICE_NAME = 'Pigeon'
+SERVICE_PHONE_NUMBER = '+00000000000'
+SMS_ALLOWED_PER_DAY_FOR_SERVICE = 1000
+SMS_ALLOWED_PER_DAY_PER_USER = 50
+
 
 class IncomingSms:
     def __init__(self, settings: Settings, mongodb_dao: MongodbDao, langchain_client: LangchainClient, sms_from: str, sms_body: str):
@@ -17,7 +22,8 @@ class IncomingSms:
         self.sms_body = sms_body[:1600]
         self.is_user_onboarded = True
         self.mongodb_dao: MongodbDao = mongodb_dao
-        self.user: UserDto = self._get_user_from_db()
+        self.pigeon = self._get_user_from_db(SERVICE_PHONE_NUMBER, SERVICE_NAME)
+        self.user: UserDto = self._get_user_from_db(self.sms_from)
         self.is_user_name_known = self.user.name is not None
         self.are_user_cities_known = self.user.cities_ca is not None
         self.mongodb_langchain_dao: MongodbLangchainDao = MongodbLangchainDao(settings, sms_from)
@@ -25,8 +31,9 @@ class IncomingSms:
 
     def get_response(self) -> str:
         message, response = '', MessagingResponse()
-        is_user_rate_limited = self.mongodb_dao.is_user_rate_limited(self.user)
-        if not is_user_rate_limited:
+        is_service_rate_limited = self.mongodb_dao.is_user_rate_limited(self.pigeon, SMS_ALLOWED_PER_DAY_FOR_SERVICE)
+        is_user_rate_limited = self.mongodb_dao.is_user_rate_limited(self.user, SMS_ALLOWED_PER_DAY_PER_USER)
+        if not is_service_rate_limited and not is_user_rate_limited:
             chat_history = self.mongodb_langchain_dao.chat_history
             processed_potential_admin_command = self._process_admin_commands(response, chat_history)
             if not processed_potential_admin_command:
@@ -44,28 +51,28 @@ class IncomingSms:
             else:
                 logger.warn(f'Detected admin command from user with phone number {self.sms_from} and processed it')
         else:
-            logger.warn(f'User with phone number {self.sms_from} has reached rate limit - not sending reply')
+            logger.warn(f'{self.sms_from} has reached rate limit - not sending reply')
         response.message(message + self._get_message_trailer())
         return str(response)
 
-    def _get_user_from_db(self) -> UserDto:
+    def _get_user_from_db(self, phone_number: str, name: str = None) -> UserDto:
         user = None
         try:
-            user = self.mongodb_dao.get_user_by_phone_number(self.sms_from)
-            logger.info(f'User with phone number {self.sms_from} fetched from DB')
+            user = self.mongodb_dao.get_user_by_phone_number(phone_number)
+            logger.info(f'User with phone number {phone_number} fetched from DB')
         except MongoDbUserNotFoundException as e:
             logger.info(f'User does not exist in DB; adding the user to the DB..')
-            user = self._add_new_user_to_db()
+            user = self._add_new_user_to_db(phone_number, name)
         except Exception as e:
             logger.error(f'Error while fetching user from DB: {str(e)}')
         finally:
             return user
 
-    def _add_new_user_to_db(self) -> UserDto:
-        user_dto = UserDto(phone_number=self.sms_from)
+    def _add_new_user_to_db(self, phone_number: str, name: str = None) -> UserDto:
+        user_dto = UserDto(phone_number=phone_number, name=name)
         try:
             inserted_id = self.mongodb_dao.insert_user(user_dto)
-            logger.info(f'New user with phone number {self.sms_from} inserted in DB with ID: {inserted_id}')
+            logger.info(f'New user with phone number {phone_number} inserted in DB with ID: {inserted_id}')
             self.is_user_onboarded = False
             return user_dto
         except Exception as e:

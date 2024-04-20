@@ -1,19 +1,15 @@
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 from back_end.dto.user_dto import UserDto
 from back_end.utils.exceptions import MongoDbUserNotFoundException
 from back_end.utils.generic import logger
 from back_end.utils.settings_accumalator import Settings
-from pymongo import MongoClient
-
-SMS_ALLOWED_PER_DAY_PER_USER = 50
-SMS_ALLOWED_PER_DAY_TOTAL = 1000
+from pymongo import MongoClient, errors
 
 
 class MongodbDao:
     def __init__(self, settings: Settings):
-
         self.client = MongoClient(host=f'mongodb://{settings.configs_env.mongodb_container_name}',
                                   port=settings.configs_env.mongodb_port_number,
                                   username=settings.secrets_mongodb.username,
@@ -23,11 +19,23 @@ class MongodbDao:
         self.db = self.client[f'{settings.configs_env.mongodb_database}']
         self.collection_users = self.db[settings.configs_app.mongodb_collection_users]
 
-    def insert_user(self, user: UserDto):
-        userDict = vars(user)
-        del (userDict['_id'])
-        result = self.collection_users.insert_one(userDict)
-        return result.inserted_id
+    def insert_user(self, user: UserDto) -> Optional[str]:
+        """
+        Inserts a user into the database if they do not already exist.
+        :param user: UserDto containing user information.
+        :return: The MongoDB ID of the inserted user or None if the user already exists.
+        """
+        inserted_id, user_dict = None, vars(user)
+        user_dict.pop('_id', None)
+        if self.collection_users.count_documents({'phone_number': user.phone_number}) == 0:
+            try:
+                result = self.collection_users.insert_one(user_dict)
+                inserted_id = result.inserted_id
+            except errors.PyMongoError as e:
+                logger.error(f"Failed to insert user with phone number {user.phone_number}: {e}")
+        else:
+            logger.info(f"User with phone number {user.phone_number} already exists")
+        return inserted_id
 
     def delete_user(self, user: UserDto) -> int:
         tomorrow = datetime.now() + timedelta(days=1)
@@ -36,24 +44,25 @@ class MongodbDao:
             raise Exception('User not found or already deleted.')
         return result.matched_count
 
-    def is_user_rate_limited(self, user: UserDto) -> bool:
-        logger.info(f'Checking if user {user.phone_number} is rate limited')
-        is_rate_limited = False
-        now = datetime.now()
+    def is_user_rate_limited(self, user: UserDto, rate_limit: int) -> bool:
+        logger.info(f'Checking if user {user.phone_number} is rate limited..')
+        user_rate_limited, now = False, datetime.now()
         day_after_tomorrow = now + timedelta(days=2)
         if user.deletion_date < day_after_tomorrow:
             logger.info(f'User {user.phone_number} recently off-boarded from the system..')
-            is_rate_limited = True
+            user_rate_limited = True
         else:
             if user.time_last_sms is not None and now.date() > user.time_last_sms.date():
-                self._update_sms_counter(user, 0)  # reset counter every new day
+                self._update_sms_counter(user, 0)  # reset counter for user every new day
             else:
-                if user.sms_counter <= SMS_ALLOWED_PER_DAY_PER_USER:
+                logger.info(f'in here {user.phone_number}, {user.sms_counter}')
+                if user.sms_counter <= rate_limit:
                     self._update_sms_counter(user, user.sms_counter + 1)
                 else:
-                    is_rate_limited = True
+                    logger.info(f'User {user.phone_number} rate limit reached ({user.sms_counter} / {rate_limit})')
+                    user_rate_limited = True
             self.update_time_last_sms(user, now)
-        return is_rate_limited
+        return user_rate_limited
 
     def _update_sms_counter(self, user: UserDto, sms_counter: int) -> int:
         result = self.collection_users.update_one({'phone_number': user.phone_number}, {'$set': {'sms_counter': sms_counter}})
