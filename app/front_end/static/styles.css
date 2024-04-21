@@ -5,16 +5,12 @@ body {
     margin: 0;
     padding: 0 20px;
     line-height: 1.6;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 40px;
+    font-size: 18px;
 }
 
 h1 {
     color: #2a5d78;
-    font-size: 36px;
+    font-size: 40px;
 }
 
 main {
@@ -23,9 +19,13 @@ main {
     padding: 20px;
 }
 
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
 
 .info-section p {
-    font-size: 18px;
+    font-size: 20px;
     color: #555;
     margin-bottom: 20px;
 }
@@ -36,8 +36,22 @@ main {
 }
 
 p {
-    font-size: 16px;
+    font-size: 18px;
     color: #555555;
+}
+
+#reveal-button {
+    font-size: 20px;
+    padding: 12px 24px;
+    background-color: #556b2f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 200px;
+    min-width: 200px;
 }
 
 #contact-section {
@@ -49,31 +63,13 @@ p {
     width: 100%;
 }
 
-#reveal-button {
-    font-size: 18px;
-    padding: 10px 20px;
-    background-color: #556b2f;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 100%;
-    max-width: 180px;
-}
-
 #number-container {
     text-align: center;
-    font-size: 24px;
+    font-size: 26px;
     color: #000;
+    margin-top: 20px;
 }
 
-#number-container.visible {
-    visibility: visible;
-    opacity: 1;
-    height: auto;
-    transition: opacity 0.5s linear;
-}
 
 img {
     width: 100px;
@@ -92,30 +88,43 @@ img {
 
 @media (max-width: 600px) {
     h1 {
-        font-size: 28px;
+        font-size: 32px;
     }
 
     .info-section p, p {
-        font-size: 14px;
+        font-size: 16px;
+    }
+
+    #reveal-button {
+        font-size: 20px;
+        padding: 12px 24px;
+    }
+
+    #number-container {
+        font-size: 26px;
+    }
+
+    footer p {
+        font-size: 16px;
     }
 }
 
 footer {
     padding: 20px;
-    background-color: #f4f4f4; /* Light grey background */
+    background-color: #f4f4f4;
     text-align: center;
-    color: #333; /* Dark grey text color */
-    border-top: 1px solid #ddd; /* Subtle top border */
+    color: #333;
+    border-top: 1px solid #ddd;
     position: absolute;
     bottom: 0;
     width: 100%;
 }
 
 footer a {
-    color: #0066cc; /* Blue color for links */
-    text-decoration: none; /* No underline */
+    color: #0066cc;
+    text-decoration: none;
 }
 
 footer a:hover {
-    text-decoration: underline; /* Underline on hover for better interaction visibility */
+    text-decoration: underline;
 }
