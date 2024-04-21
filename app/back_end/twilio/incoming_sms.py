@@ -136,7 +136,8 @@ class IncomingSms:
             'pidge human <city>: connects you to another human (if available) to help answer your travel questions for that city - ' + \
             'this connection expires after 24 hours (example usage "pidge human Sacramento")\n\n' + \
             'pidge ai: ends your ongoing connection with another human (if applicable) and connects you back to pidge!\n\n' + \
-            'pidge delete: deletes all your information from the system and off-boards your from the platform\n\n'
+            'pidge delete: deletes all your information from the system and off-boards your from the platform\n\n' + \
+            'For more information, visit pigeonmsg.com'
         response.message(message)
 
     def _handle_admin_command_name(self, response: MessagingResponse, name: str, chat_history: MongoDBChatMessageHistory):
