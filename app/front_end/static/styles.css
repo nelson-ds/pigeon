@@ -1,29 +1,111 @@
 body {
-    background-color: #f5f5f5;
-    font-family: Arial, sans-serif;
+    background-color: #fff;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
 }
 
-#header {
-    display: flex;
-    align-items: center;
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+h1 {
+    color: #2a5d78;
+    font-size: 36px;
+}
+
+main {
+    max-width: 800px;
+    margin: auto;
+}
+
+.info-section p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.button-container {
+    text-align: center;
+    position: relative;
+    padding: 20px;
 }
 
 p {
-    color: #345d67;
+    font-size: 16px;
+    color: #555555;
 }
 
-#pet-button {
-    font-size: 60px;
-    padding: 15px 30px;
-    display: block;
-    margin: 0 auto;
-}
-
-#pet-action {
+#contact-section {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
-    height: 250px;
-    overflow: auto;
+    justify-content: flex-start;
+    margin-top: 50px;
+    width: 100%;
+}
+
+#reveal-button {
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: #556b2f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 180px; 
+    margin-bottom: 20px;
+}
+
+#number-container {
+    text-align: center;
     font-size: 24px;
+    color: #000;
+}
+
+#number-container.visible {
+    visibility: visible;
+    opacity: 1;
+    height: auto;
+    transition: opacity 0.5s linear;
+}
+
+img {
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+}
+
+#reveal-button:hover {
+    background-color: #6b8e23;
+}
+
+@keyframes sprayPaint {
+    0% { opacity: 0; transform: scale(0.8); filter: blur(4px); }
+    50% { opacity: 1; transform: scale(1.05); filter: blur(0); }
+    100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+footer {
+    padding: 20px;
+    background-color: #f4f4f4; /* Light grey background */
+    text-align: center;
+    color: #333; /* Dark grey text color */
+    border-top: 1px solid #ddd; /* Subtle top border */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: #0066cc; /* Blue color for links */
+    text-decoration: none; /* No underline */
+}
+
+footer a:hover {
+    text-decoration: underline; /* Underline on hover for better interaction visibility */
 }
