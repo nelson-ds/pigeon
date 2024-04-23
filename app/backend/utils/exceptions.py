@@ -1,0 +1,3 @@
+
+class MongoDbUserNotFoundException(Exception):
+    pass

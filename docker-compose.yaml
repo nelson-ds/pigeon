@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  pigeon_app:
+    container_name: ${APP_CONTAINER_NAME}
+    build: .
+    ports:
+      - ${APP_PORT_NUMBER}:${APP_PORT_NUMBER}
+    volumes:
+      - ./.env:/pigeon/.env
+      - ./secrets/${ENVIRONMENT}:/pigeon/secrets
+      - ./app:/pigeon/app
+    env_file:
+      - .env
+
+  mongodb:
+    container_name: ${MONGODB_CONTAINER_NAME}
+    image: mongo:4.0
+    restart: always
+    ports:
+      - ${MONGODB_PORT_NUMBER}:${MONGODB_PORT_NUMBER}
+    volumes:
+      - ./secrets/${ENVIRONMENT}/mongodb:/pigeon/secrets/
+      - ./mongodb/data/db:/data/db
+      - ./mongodb/init_scripts:/docker-entrypoint-initdb.d
+    environment:
+      - MONGOSH=mongo --username $$MONGO_INITDB_ROOT_USERNAME --password $$MONGO_INITDB_ROOT_PASSWORD --authenticationDatabase $$MONGO_AUTH_DATABASE $$MONGO_INITDB_DATABASE
+    env_file:
+      - ./secrets/${ENVIRONMENT}/mongodb/mongodb_credentials.txt
+      - .env

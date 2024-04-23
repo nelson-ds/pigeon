@@ -1,0 +1,25 @@
+{
+    "common": {
+        "mongodb_collection_users": "users",
+        "mongodb_collection_chats": "chats",
+        "web_route_home": "/",
+        "web_route_sms": "/sms",
+        "web_route_static": "/static",
+        "web_static_dir": "/pigeon/app/frontend/static/",
+        "web_templates_dir": "/pigeon/app/frontend/templates/",
+        "web_template_home_file_name": "index.html",
+        "langchain_retrieval_docs_dir": "/pigeon/app/backend/langchain/retrieval_docs/",
+        "openai_model": "gpt-3.5-turbo-1106",
+        "openai_temperature": "0.2"
+    },
+    "dev": {
+        "uvicorn_reload": true,
+        "logging_format_minimized": true,
+        "logging_level": "INFO"
+    },
+    "stage": {
+        "uvicorn_reload": false,
+        "logging_format_minimized": false,
+        "logging_level": "INFO"
+    }
+}

@@ -1,0 +1,130 @@
+body {
+    background-color: #fff;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0 20px;
+    line-height: 1.6;
+    font-size: 18px;
+}
+
+h1 {
+    color: #2a5d78;
+    font-size: 40px;
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.info-section p {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.button-container {
+    text-align: center;
+    padding: 20px;
+}
+
+p {
+    font-size: 18px;
+    color: #555555;
+}
+
+#reveal-button {
+    font-size: 20px;
+    padding: 12px 24px;
+    background-color: #556b2f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 200px;
+    min-width: 200px;
+}
+
+#contact-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 50px;
+    width: 100%;
+}
+
+#number-container {
+    text-align: center;
+    font-size: 26px;
+    color: #000;
+    margin-top: 20px;
+}
+
+
+img {
+    width: 100px;
+    height: 100px;
+}
+
+#reveal-button:hover {
+    background-color: #6b8e23;
+}
+
+@keyframes sprayPaint {
+    0% { opacity: 0; transform: scale(0.8); filter: blur(4px); }
+    50% { opacity: 1; transform: scale(1.05); filter: blur(0); }
+    100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 32px;
+    }
+
+    .info-section p, p {
+        font-size: 16px;
+    }
+
+    #reveal-button {
+        font-size: 20px;
+        padding: 12px 24px;
+    }
+
+    #number-container {
+        font-size: 26px;
+    }
+
+    footer p {
+        font-size: 16px;
+    }
+}
+
+footer {
+    padding: 20px;
+    background-color: #f4f4f4;
+    text-align: center;
+    color: #333;
+    border-top: 1px solid #ddd;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
