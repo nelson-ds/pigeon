@@ -54,8 +54,9 @@ Trip planning service which leverages AI recommendations as well as human travel
     - install this to update service diagrams
 
 ### Working in development environment
-1. Start the application: `make start`
-2. Stop the application: `make stop`
+1. Build service: `docker-compose up --build -d`
+2. Start the application: `make start`
+3. Stop the application: `make stop`
 
 ### Helper commands
 - Access app landing page:
