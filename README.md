@@ -97,6 +97,6 @@ Trip planning service which leverages AI recommendations as well as human travel
             -H "Authorization: Basic dGVzdDp0ZXN0" \
             -H "X-Twilio-Signature: 5rVrhMTIJCCg0FOvzCbH809pehE=" \
             -d "To=%2B1234567890" -d "From=%2B0987654321" -d "Body=Hello, pigeon" \
-            https://localhost/sms
+            http://localhost:8001/sms
         ```
 
