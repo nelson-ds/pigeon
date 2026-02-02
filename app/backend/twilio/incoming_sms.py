@@ -14,8 +14,8 @@ from twilio.twiml.messaging_response import MessagingResponse
 
 SERVICE_NAME = 'Pigeon'
 SERVICE_PHONE_NUMBER = '+00000000000'
-SMS_ALLOWED_PER_DAY_FOR_SERVICE = 1000
-SMS_ALLOWED_PER_DAY_PER_USER = 50
+SMS_ALLOWED_PER_DAY_FOR_SERVICE = 20
+SMS_ALLOWED_PER_DAY_PER_USER = 10
 
 
 class IncomingSms:
